@@ -12,7 +12,7 @@ export function BalanceCard({ title, value, className }: { title: string, value:
     )
 }
 
-export function MarketcapCard({ title, value, className }: { title: string, value: string, className: string }) {
+export function MarketcapCard({ title, value, className }: { title: string, value: string, className?: string }) {
     return (
         <Card className={`bg-gray-100 flex flex-col justify-center w-100 h-30 pl-4 ${className}`}>
             <CardContent>

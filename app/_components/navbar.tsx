@@ -10,7 +10,7 @@ export default function Navbar() {
                     <Link href="/">Market</Link>
                     <Link href="/portfolio">Portfolio</Link>
                 </div>
-                <Image style={{ fill: 'red' }} src="/user.svg" height={25} width={25} alt="Profile" className="cursor-pointer mr-5 hover:scale-120" />
+                <Image src="/user.svg" height={25} width={25} alt="Profile" className="cursor-pointer mr-5 hover:scale-120" />
             </Toolbar>
         </AppBar>
     )

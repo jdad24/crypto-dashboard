@@ -52,7 +52,7 @@ export function BluechipTable() {
 
 
     return (
-        <TableContainer>
+        <TableContainer component={Paper}>
             <Table className="w-full">
                 <TableHead className="text-left">
                     <TableRow>

@@ -9,8 +9,8 @@ export default async function Home() {
   return (
     <div className="">
       <main className="">
-        <div className="flex flex-col mx-[5%] gap-10">      
-          <MarketcapCard title="Total Market Cap" value={totalMarketCap} className="mt-2"/>
+        <div className="flex flex-col mx-[5%] gap-10 mt-5">      
+          <MarketcapCard title="Total Market Cap" value={totalMarketCap} />
           <BluechipTable/>
         </div>
       </main>
