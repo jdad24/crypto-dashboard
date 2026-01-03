@@ -10,10 +10,12 @@ type AreaData = {
     value: number
 }
 
-export default function AreaChart({ historicalData }: { 
-    historicalData: { prices: Array<Array<number>>,
-    market_caps: Array<Array<number>>
- } }) {
+export default function AreaChart({ historicalData }: {
+    historicalData: {
+        prices: Array<Array<number>>,
+        market_caps: Array<Array<number>>
+    }
+}) {
 
     // const [data, setData] = useState<Array<CandleData>>([])
     const [tabIndex, setTabIndex] = useState(0);
@@ -22,9 +24,9 @@ export default function AreaChart({ historicalData }: {
     const formatData = (data: Array<Array<number>>) => {
         const formattedData: Array<AreaData> = []
 
-        data.map(record => {
+        data.slice(0, 365).map(record => { //First 365 records
             const dataPoint: AreaData = {
-                time: String(record[0] / 1000),
+                time: new Date(record[0]).toISOString().split('T')[0],
                 value: record[1]
             }
             formattedData.push(dataPoint)
@@ -45,10 +47,10 @@ export default function AreaChart({ historicalData }: {
         const chartOptions = { width: 800, height: 600, layout: { textColor: fgThemeColor, background: { color: bgThemeColor } } };
         const chart = createChart(chartRef.current, chartOptions);
         chart.applyOptions({
-                localization: {
-                    priceFormatter: myPriceFormatter
-                }
-            })
+            localization: {
+                priceFormatter: myPriceFormatter
+            }
+        })
         const areaSeries = chart.addSeries(AreaSeries, { lineColor: '#2962FF', topColor: '#2962FF', bottomColor: 'rgba(41, 98, 255, 0.28)' });
         areaSeries.setData(data);
 
@@ -60,13 +62,13 @@ export default function AreaChart({ historicalData }: {
 
     }, [tabIndex])
 
-    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {        
+    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabIndex(newValue);
     };
 
     return (
         <div className='border-2 border-gray-400' ref={chartRef}>
-            <Tabs style={{backgroundColor: "white"}} value={tabIndex} onChange={handleTabChange}>
+            <Tabs style={{ backgroundColor: "white" }} value={tabIndex} onChange={handleTabChange}>
                 <Tab label="Price" />
                 <Tab label="Market Cap" />
             </Tabs>

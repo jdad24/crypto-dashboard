@@ -18,8 +18,8 @@ export function BluechipTable() {
 
     useEffect(() => {
         const fetchCoins = async () => {
-            try {
-                const response = await fetch("http://localhost:3000/api/v1/coins")
+            try {              
+                const response = await fetch(`/api/v1/coins`)
                 const data = await response.json()
                 console.log(data)
                 setCoins(data)
