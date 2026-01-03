@@ -1,7 +1,7 @@
 import { MarketcapCard } from "./_components/cards";
 import { BluechipTable } from "./_components/bluechip-table";
 import { convertToCurrency } from "@/utils";
-import { getHostUrl } from "./coins/[coin]/page";
+import { headers } from "next/headers";
 
 export default async function Home() {
   const host = await getHostUrl()
@@ -19,4 +19,12 @@ export default async function Home() {
       </main>
     </div>
   );
+}
+
+async function getHostUrl() {
+    const headersList = await headers();
+    const host = headersList.get('host');
+    const protocol = process.env.VERCEL_ENV === 'production' ? 'https' : 'http';
+
+    return `${protocol}://${host}`;
 }
