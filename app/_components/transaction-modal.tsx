@@ -29,8 +29,6 @@ export default function TransactionModal({ open, setShowModal }: { open: boolean
     }
 
     function handleAutocompleteInput(e: React.SyntheticEvent<Element>, newValue: string | null) {
-        console.log(newValue)
-
         if (newValue != null) {
             setCoin(newValue)
         }
