@@ -4,10 +4,7 @@ import { convertToCurrency } from "@/utils";
 import { headers } from "next/headers";
 
 export default async function Home() {
-  const host = await getHostUrl()
-  console.log(host)
-
-  const response = await fetch(`${host}/api/v1/marketcap`)
+  const response = await fetch(`/api/v1/marketcap`)
   const totalMarketCap = convertToCurrency(await response.json(), 0)
 
   return (
