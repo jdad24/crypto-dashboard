@@ -1,6 +1,10 @@
-import { Card, CardContent } from "@mui/material"
+'use client';
 
-interface CardProps { title: string, value: string, className?: string }
+import { Card, CardContent } from "@mui/material"
+import { convertToCurrency } from "@/utils"
+import { useEffect, useState } from "react";
+
+interface CardProps { title?: string, value?: string, className?: string }
 interface CoinDataCardProps { marketCap: string, circulatingSupply: string, totalSupply: string, maxSupply: string, className?: string }
 
 export function BalanceCard({ title, value, className }: CardProps) {
@@ -15,12 +19,21 @@ export function BalanceCard({ title, value, className }: CardProps) {
     )
 }
 
-export function MarketcapCard({ title, value, className }: CardProps) {
+export function MarketcapCard({ className }: CardProps) {
+    const [marketCap, setMarketCap] = useState("-")
+
+    useEffect(() => {
+        (async () => {
+            const response = await fetch(`/api/v1/marketcap`)
+            setMarketCap(convertToCurrency(await response.json(), 0))
+        })()
+    })
+
     return (
         <Card className={`bg-gray-100 flex flex-col justify-center w-100 h-30 pl-4 ${className}`}>
             <CardContent>
-                <div className="font-bold text-2xl p-2">{value}</div>
-                <div className="font-bold text-gray-600 text-lg p-2">{title}</div>
+                <div className="font-bold text-2xl p-2">{marketCap}</div>
+                <div className="font-bold text-gray-600 text-lg p-2">Total Market Cap</div>
             </CardContent>
         </Card>
     )
