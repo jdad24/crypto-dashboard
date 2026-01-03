@@ -1,6 +1,9 @@
 import { Card, CardContent } from "@mui/material"
 
-export function BalanceCard({ title, value, className }: { title: string, value: string, className?: string }) {
+interface CardProps { title: string, value: string, className?: string }
+interface CoinDataCardProps { marketCap: string, circulatingSupply: string, totalSupply: string, maxSupply: string, className?: string }
+
+export function BalanceCard({ title, value, className }: CardProps) {
 
     return (
         <Card className={`bg-gray-100 flex flex-col justify-center w-100 h-30 pl-4 ${className}`}>
@@ -12,7 +15,7 @@ export function BalanceCard({ title, value, className }: { title: string, value:
     )
 }
 
-export function MarketcapCard({ title, value, className }: { title: string, value: string, className?: string }) {
+export function MarketcapCard({ title, value, className }: CardProps) {
     return (
         <Card className={`bg-gray-100 flex flex-col justify-center w-100 h-30 pl-4 ${className}`}>
             <CardContent>
@@ -23,8 +26,7 @@ export function MarketcapCard({ title, value, className }: { title: string, valu
     )
 }
 
-export function TokenDataCard({ marketCap, circulatingSupply, totalSupply, maxSupply, className }:
-    { marketCap: string, circulatingSupply: string, totalSupply: string, maxSupply: string, className?: string }) {
+export function CoinDataCard({ marketCap, circulatingSupply, totalSupply, maxSupply, className }: CoinDataCardProps) {
     return (
         <Card className="flex flex-col justify-evenly bg-gray-100 w-100 h-50 p-3 font-bold">
             <CardContent>

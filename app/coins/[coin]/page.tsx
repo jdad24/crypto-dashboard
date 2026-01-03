@@ -2,7 +2,7 @@ import { capitalize, convertToCurrency } from "@/utils"
 import { headers } from "next/headers"
 import AreaChart from "@/app/_components/area-chart"
 import Image from "next/image"
-import { TokenDataCard } from "@/app/_components/cards"
+import { CoinDataCard } from "@/app/_components/cards"
 
 export default async function CoinProfile({ params }: { params: Promise<{ coin: string }> }) {
     const { coin } = await params
@@ -25,7 +25,7 @@ export default async function CoinProfile({ params }: { params: Promise<{ coin: 
                     </h1>
                     <div className="text-5xl">{convertToCurrency(current_price)} </div>
                 </div>
-                <TokenDataCard
+                <CoinDataCard
                     marketCap={convertToCurrency(market_cap, 0)}
                     circulatingSupply={Number(circulating_supply).toLocaleString()}
                     totalSupply={Number(total_supply).toLocaleString()}
