@@ -6,7 +6,7 @@ import { Tabs, Tab } from '@mui/material';
 import { myPriceFormatter } from '@/utils';
 
 type AreaData = {
-    time: number,
+    time: string,
     value: number
 }
 
@@ -24,7 +24,7 @@ export default function AreaChart({ historicalData }: {
 
         data.map(record => {
             const dataPoint: AreaData = {
-                time: record[0] / 1000,
+                time: String(record[0] / 1000),
                 value: record[1]
             }
             formattedData.push(dataPoint)
@@ -60,7 +60,7 @@ export default function AreaChart({ historicalData }: {
 
     }, [tabIndex])
 
-    const handleTabChange = (event, newValue: number) => {        
+    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {        
         setTabIndex(newValue);
     };
 
