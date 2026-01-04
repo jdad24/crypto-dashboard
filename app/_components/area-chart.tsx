@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createChart, AreaSeries } from 'lightweight-charts';
 import { Tabs, Tab } from '@mui/material';
-import { myPriceFormatter } from '@/utils';
+import { myPriceFormatter } from '@/app/_lib/utils';
 
 type AreaData = {
     time: string,

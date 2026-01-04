@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { convertToCurrency } from "@/utils";
+import { convertToCurrency } from "@/app/_lib/utils";
 import { useRouter } from "next/navigation";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';

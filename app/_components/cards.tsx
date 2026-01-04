@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardContent } from "@mui/material"
-import { convertToCurrency } from "@/utils"
+import { convertToCurrency } from "@/app/_lib/utils"
 import { useEffect, useState } from "react";
 
 interface CardProps { title?: string, value?: string, className?: string }

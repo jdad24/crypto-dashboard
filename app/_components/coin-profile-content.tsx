@@ -1,6 +1,6 @@
 'use client';
 
-import { capitalize, convertToCurrency } from "@/utils"
+import { capitalize, convertToCurrency } from "@/app/_lib/utils"
 import AreaChart from "@/app/_components/area-chart"
 import Image from "next/image"
 import { CoinDataCard } from "@/app/_components/cards"
