@@ -11,10 +11,13 @@ export async function GET(request: NextRequest) {
     try {
         const response = await fetch(url, options)
         const { data } = await response.json()
-        const totalMarketcap = data?.['total_market_cap']?.['usd']
 
-        if (totalMarketcap) {
-            return NextResponse.json(totalMarketcap)
+        if (response.ok) {
+            const totalMarketcap = data?.['total_market_cap']?.['usd']
+
+            if (totalMarketcap) {
+                return NextResponse.json(totalMarketcap)
+            }
         }
 
         throw new Error("Total marketcap fetch failure")
