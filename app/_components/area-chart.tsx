@@ -10,8 +10,8 @@ type AreaData = {
     value: number
 }
 
-export default function AreaChart({ historicalData }: {
-    historicalData: {
+export default function AreaChart({ chartData }: {
+    chartData: {
         prices: Array<Array<number>>,
         market_caps: Array<Array<number>>
     }
@@ -30,8 +30,7 @@ export default function AreaChart({ historicalData }: {
                 value: record[1]
             }
             formattedData.push(dataPoint)
-        })
-        console.log(formattedData)
+        })        
         return formattedData
     }
 
@@ -42,7 +41,7 @@ export default function AreaChart({ historicalData }: {
         const bgThemeColor = getComputedStyle(document.documentElement).getPropertyValue('--color-background').trim();
         const fgThemeColor = getComputedStyle(document.documentElement).getPropertyValue('--color-foreground').trim();
 
-        tabIndex == 0 ? data = formatData(historicalData?.['prices']) : data = formatData(historicalData?.['market_caps'])
+        tabIndex == 0 ? data = formatData(chartData?.['prices']) : data = formatData(chartData?.['market_caps'])
 
         const chartOptions = { width: 800, height: 600, layout: { textColor: fgThemeColor, background: { color: bgThemeColor } } };
         const chart = createChart(chartRef.current, chartOptions);
@@ -60,7 +59,7 @@ export default function AreaChart({ historicalData }: {
             chart.remove()
         }
 
-    }, [tabIndex])
+    }, [tabIndex, chartData])
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabIndex(newValue);

@@ -8,7 +8,9 @@ export function convertToCurrency(amount: Number, numDecimals = 2) {
     return formattedCurrency
 }
 
-export function capitalize(word: string){
+export function capitalize(word: string){    
+    if(typeof word != "string" || word.trim() == "") return
+
     const firstLetter = word[0].toUpperCase()
     return firstLetter + word.slice(1)     
 }

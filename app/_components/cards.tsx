@@ -24,8 +24,12 @@ export function MarketcapCard({ className }: CardProps) {
 
     useEffect(() => {
         (async () => {
-            const response = await fetch(`/api/v1/marketcap`)
-            setMarketCap(convertToCurrency(await response.json(), 0))
+            try {
+                const response = await fetch(`/api/v1/marketcap`)
+                setMarketCap(convertToCurrency(await response.json(), 0))
+            } catch (e) {
+                setMarketCap("-")
+            }
         })()
     })
 
