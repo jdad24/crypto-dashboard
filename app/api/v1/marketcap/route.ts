@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
     try {
         const response = await fetch(url, options)
         const { data } = await response.json()
+        console.log(response, data)
 
         if (response.ok) {
             const totalMarketcap = data?.['total_market_cap']?.['usd']
