@@ -7,6 +7,15 @@ import { useEffect, useState } from "react";
 interface CardProps { title?: string, value?: string, className?: string }
 interface CoinDataCardProps { marketCap: string, circulatingSupply: string, totalSupply: string, maxSupply: string, className?: string }
 
+export function HeaderCard({ title, className }: { title: string, className?: string }) {
+    return (
+        <Card className={`bg-gray-100  h-20 w-80 flex flex-row justify-center items-center ${className}`}>
+            <CardContent>
+                <div className="font-bold text-2xl">{title}</div>
+            </CardContent>
+        </Card>
+    )
+}
 export function BalanceCard({ title, value, className }: CardProps) {
 
     return (

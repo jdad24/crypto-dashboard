@@ -12,16 +12,24 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+interface Coin {
+    id: string
+    market_cap_rank: string
+    current_price: number
+    market_cap: number
+    image: string
+    name: string
+}
+
 export function BluechipTable() {
-    const [coins, setCoins] = useState([])
+    const [coins, setCoins] = useState<Array<Coin>>([])
     const router = useRouter()
 
     useEffect(() => {
         const fetchCoins = async () => {
-            try {              
+            try {
                 const response = await fetch(`/api/v1/coins`)
-                const data = await response.json()
-                console.log(data)
+                const data: Array<Coin> = await response.json()
                 setCoins(data)
             } catch (e) {
                 console.error(e)
@@ -40,8 +48,10 @@ export function BluechipTable() {
             <TableRow key={index} className="hover:bg-blue-400 cursor-pointer" onClick={() => handleRowClick(coin)}>
                 <TableCell className="w-10">{coin['market_cap_rank']}</TableCell>
                 <TableCell className="h-15 flex flex-row justify-left items-center font-bold">
-
-                    <Image className="mr-2" src={coin['image']} alt="Coin Image" width={25} height={10} />
+                    <Image className="mr-2" src={coin['image']} alt="Coin Image" width={25} height={25} style={{
+                        width: '8%',
+                        height: 'auto', // This preserves the aspect ratio
+                    }} />
                     {coin['name']}
                 </TableCell>
                 <TableCell>{convertToCurrency(coin['current_price'])}</TableCell>
