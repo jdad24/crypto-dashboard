@@ -34,3 +34,23 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Sessions
+
+Sessions will be stored using in-memory storage. Will perhaps make a change to redis or mongodb at a later date
+
+## UI Components and Styling
+
+UI enhanced using tailwind and material ui
+
+## Database
+
+Neon postgres database on vercel used for data storage
+
+## Crypto Market Data
+
+Data retrieved using coingecko api
+
+## Environment variables
+
+Insert coingecko api key into `.env` file. Also ensure vercel environment variables are propertly inserted for vercel deployments
