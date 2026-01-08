@@ -4,8 +4,8 @@ import { neon } from "@neondatabase/serverless";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 
-export default function CreateAccount() {
-    async function create(formData: FormData) {
+export default function SignUp() {
+    async function signup(formData: FormData) {
         'use server'
 
         const username = formData.get('username') as string;
@@ -24,12 +24,12 @@ export default function CreateAccount() {
         } catch (e) {
             console.error(e)
         }
-        redirect('/account/login')
+        redirect('/api/auth/signin')
     }
     return (
         <main className="flex flex-col ">
-            <HeaderCard title="Create Account" className="m-5" />
-            <Box component="form" action={create}>
+            <HeaderCard title="Sign Up" className="m-5" />
+            <Box component="form" action={signup}>
                 <FormControl className="w-full flex flex-col justify-center items-center gap-5 mt-10">
                     <TextField required className="w-100" name="username" label="Username" placeholder="Enter username" />
                     <TextField required className="w-100" name="email" label="Email" placeholder="Enter email" />

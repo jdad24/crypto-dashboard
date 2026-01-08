@@ -24,13 +24,14 @@ export default function Navbar() {
                 </div>
                 <Button id="basic-button" startIcon={UserImage} onClick={handleClick}>
                     <Menu open={menuOpen} anchorEl={anchorEl}>
-                        <Link href="/account/create">
+                        <Link href="/account/signup">
+                        {/* <Link href="/api/auth/signup"> */}
                             <MenuItem className="font-bold">Create Account</MenuItem>
                         </Link>
-                        <Link href="/account/login">
+                        {/* <Link href="/account/login"> */}
+                        <Link href="/api/auth/signin">
                             <MenuItem className="font-bold">Login</MenuItem>
                         </Link>
-
                     </Menu>
                 </Button>
             </Toolbar>
