@@ -16,7 +16,6 @@ export default function Navbar({ email }: { email: string | null }) {
     }
 
     const renderMenu = () => {
-        console.log("Email in Navbar:", email)
         if (!email) {
             return (
                 <Menu open={menuOpen} anchorEl={anchorEl}>
@@ -33,7 +32,7 @@ export default function Navbar({ email }: { email: string | null }) {
         } else {
             return (
                 <Menu open={menuOpen} anchorEl={anchorEl}>                    
-                        <MenuItem className="font-bold" onClick={() => signOut()}>Sign Out</MenuItem>                    
+                        <MenuItem className="font-bold" onClick={() => signOut({ callbackUrl: '/', redirect: true })}>Sign Out</MenuItem>                    
                 </Menu>
             )
         }
@@ -46,7 +45,7 @@ export default function Navbar({ email }: { email: string | null }) {
             <Toolbar>
                 <div className="flex flex-row items-center justify-evenly w-full h-full">
                     <Link href="/">Market</Link>
-                    <Link href="/portfolio">Portfolio</Link>
+                    {email ? <Link href="/portfolio">Portfolio</Link> : null}
                 </div>
                 <Button id="basic-button" className="pointer-cursor" startIcon={UserImage} onClick={handleClick}>
                     {renderMenu()}
