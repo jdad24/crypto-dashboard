@@ -2,6 +2,7 @@
 
 import { Modal, Box, Button, Autocomplete, TextField, } from "@mui/material";
 import React, { useState, useEffect } from "react";
+import { addTransactionAction } from "../_lib/actions";
 
 export default function TransactionModal({ open, setShowModal }: { open: boolean, setShowModal: (show: boolean) => void }) {
     const [coin, setCoin] = useState("")
@@ -66,28 +67,30 @@ export default function TransactionModal({ open, setShowModal }: { open: boolean
         if (Number.isNaN(totalSpent) || Number.isNaN(quantity)) {
             alert("Please input valid numbers for the total and quantity fields.")
         }
+
+        setShowModal(false)
     }
 
     return (
         <Modal className="flex flex-row justify-center items-center" open={open}>
-            <Box className="relative bg-background text-foreground h-100 w-150 pl-5 rounded-xl">
+            <Box className="relative bg-background text-foreground h-100 w-150 pl-5 rounded-xl" component="form" onSubmit={handleSubmit} action={addTransactionAction}>
                 <h1 className="font-bold text-2xl pt-5 mb-5">New Transaction</h1>
                 <Autocomplete
                     className="w-70"
                     options={coinSelection.map(coin => coin['name'])}
                     onChange={(e, newValue) => handleAutocompleteInput(e, newValue)}
                     renderInput={(params) => <TextField
-                        {...params} label="Select Coin" />}
+                        {...params} label="Select Coin" name="coin" />}
                     disablePortal
                     value={coin}
                 />
                 <div className="flex flex-col w-70 mt-10 gap-5">
                     <TextField label="Total Spent (USD)" onChange={handleTotalChange} />
-                    <TextField label="Quantity" onChange={handleQuantityChange} />
-                    <TextField label="Price Per Coin" value={avgPrice} disabled />
+                    <TextField label="Quantity" name="quantity" onChange={handleQuantityChange} />
+                    <TextField label="Price Per Coin" name="price_per_coin" value={avgPrice} />
                 </div>
                 <div className="absolute flex flex-row justify-end gap-5 absolute bottom-0 left-0 w-full pr-1 pb-1">
-                    <Button className="bg-green-800 text-white" onClick={handleSubmit} variant="contained" >Submit</Button>
+                    <Button className="bg-green-800 text-white" type="submit"  variant="contained" >Submit</Button>
                     <Button className="bg-red-800 text-white" onClick={handleCancel} variant="contained">Cancel</Button>
                 </div>
             </Box>

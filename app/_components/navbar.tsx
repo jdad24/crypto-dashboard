@@ -4,8 +4,9 @@ import Link from "next/link"
 import Image from "next/image"
 import { AppBar, Toolbar, Button, Menu, MenuItem } from "@mui/material"
 import { useState } from "react"
+import { signOut } from "next-auth/react"
 
-export default function Navbar() {
+export default function Navbar({ email }: { email: string | null }) {
     const [menuOpen, setMenuOpen] = useState<boolean>(false)
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -13,6 +14,31 @@ export default function Navbar() {
         setMenuOpen(!menuOpen)
         setAnchorEl(event.currentTarget)
     }
+
+    const renderMenu = () => {
+        console.log("Email in Navbar:", email)
+        if (!email) {
+            return (
+                <Menu open={menuOpen} anchorEl={anchorEl}>
+                    <Link href="/account/signup">
+                        {/* <Link href="/api/auth/signup"> */}
+                        <MenuItem className="font-bold">Create Account</MenuItem>
+                    </Link>
+                    {/* <Link href="/account/login"> */}
+                    <Link href="/api/auth/signin">
+                        <MenuItem className="font-bold">Login</MenuItem>
+                    </Link>
+                </Menu>
+            )
+        } else {
+            return (
+                <Menu open={menuOpen} anchorEl={anchorEl}>                    
+                        <MenuItem className="font-bold" onClick={() => signOut()}>Sign Out</MenuItem>                    
+                </Menu>
+            )
+        }
+    }
+
 
     const UserImage = <Image src="/user.svg" height={25} width={25} alt="Profile" className="cursor-pointer mr-5 hover:scale-120" />
     return (
@@ -22,17 +48,8 @@ export default function Navbar() {
                     <Link href="/">Market</Link>
                     <Link href="/portfolio">Portfolio</Link>
                 </div>
-                <Button id="basic-button" startIcon={UserImage} onClick={handleClick}>
-                    <Menu open={menuOpen} anchorEl={anchorEl}>
-                        <Link href="/account/signup">
-                        {/* <Link href="/api/auth/signup"> */}
-                            <MenuItem className="font-bold">Create Account</MenuItem>
-                        </Link>
-                        {/* <Link href="/account/login"> */}
-                        <Link href="/api/auth/signin">
-                            <MenuItem className="font-bold">Login</MenuItem>
-                        </Link>
-                    </Menu>
+                <Button id="basic-button" className="pointer-cursor" startIcon={UserImage} onClick={handleClick}>
+                    {renderMenu()}
                 </Button>
             </Toolbar>
         </AppBar>

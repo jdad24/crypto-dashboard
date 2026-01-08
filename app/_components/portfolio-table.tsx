@@ -7,8 +7,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Transaction } from '../_lib/db';
 
-export default function PortfolioTable({ className }: { className?: string }) {
+export default function PortfolioTable({ className, transactions }: { className?: string, transactions: Transaction[] }) {
 
     return (
         <TableContainer className={className} component={Paper}>
@@ -22,12 +23,17 @@ export default function PortfolioTable({ className }: { className?: string }) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    <TableRow>
-                        <TableCell className='font-bold'>Chainlink</TableCell>
-                        <TableCell>$208.75</TableCell>
-                        <TableCell>$1,000,000</TableCell>
-                        <TableCell>+$700,000</TableCell>
-                    </TableRow>
+                    {
+                        transactions.map((transaction) => (
+                            <TableRow key={transaction.id}>
+                                <TableCell className='font-bold'>{transaction.coin}</TableCell>
+                                <TableCell>${transaction.price_per_coin}</TableCell>
+                                <TableCell>{transaction.quantity}</TableCell>
+                                <TableCell>${(transaction.quantity * transaction.price_per_coin).toFixed(2)}</TableCell>
+                            </TableRow>
+                        ))
+                    }
+            
                 </TableBody>
             </Table>
         </TableContainer>
