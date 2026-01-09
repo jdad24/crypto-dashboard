@@ -33,7 +33,7 @@ export default function SignUp() {
                 <FormControl className="w-full flex flex-col justify-center items-center gap-5 mt-10">
                     <TextField required className="w-100" name="username" label="Username" placeholder="Enter username" />
                     <TextField required className="w-100" name="email" label="Email" placeholder="Enter email" />
-                    <TextField required className="w-100" name="password" label="Password" placeholder="Enter password" />
+                    <TextField required className="w-100" type="password" name="password" label="Password" placeholder="Enter password" />
                     <Button type="submit" variant="contained" className="w-100">Create Account</Button>
                 </FormControl>
             </Box>
