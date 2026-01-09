@@ -10,7 +10,7 @@ export default function TransactionModal({ open, setShowModal }: { open: boolean
 
     const [totalSpent, setTotalSpent] = useState(0)
     const [quantity, setQuantity] = useState(0)
-    const [avgPrice, setAvgPrice] = useState(0)
+    const [pricePerCoin, setPricePerCoin] = useState(0)
 
 
     useEffect(() => {
@@ -25,7 +25,7 @@ export default function TransactionModal({ open, setShowModal }: { open: boolean
         setCoinSelection([])
         setTotalSpent(0)
         setQuantity(0)
-        setAvgPrice(0)
+        setPricePerCoin(0)
         setShowModal(false)
     }
 
@@ -45,7 +45,7 @@ export default function TransactionModal({ open, setShowModal }: { open: boolean
 
             const avg = parseNumber / quantity
             const avgWithValueCheck = Number.isNaN(avg) || !Number.isFinite(avg) ? 0 : avg
-            setAvgPrice(avgWithValueCheck)
+            setPricePerCoin(avgWithValueCheck)
         }
     }
 
@@ -59,7 +59,7 @@ export default function TransactionModal({ open, setShowModal }: { open: boolean
 
             let avg = totalSpent / parseNumber
             const avgWithValueCheck = Number.isNaN(avg) || !Number.isFinite(avg) ? 0 : avg
-            setAvgPrice(avgWithValueCheck)
+            setPricePerCoin(avgWithValueCheck)
         }
     }
 
@@ -85,9 +85,9 @@ export default function TransactionModal({ open, setShowModal }: { open: boolean
                     value={coin}
                 />
                 <div className="flex flex-col w-70 mt-10 gap-5">
-                    <TextField label="Total Spent (USD)" onChange={handleTotalChange} />
+                    <TextField label="Total Spent (USD)" name="total" onChange={handleTotalChange} />
                     <TextField label="Quantity" name="quantity" onChange={handleQuantityChange} />
-                    <TextField label="Price Per Coin" name="price_per_coin" value={avgPrice} />
+                    <TextField label="Price Per Coin" name="price_per_coin" value={pricePerCoin} />
                 </div>
                 <div className="absolute flex flex-row justify-end gap-5 absolute bottom-0 left-0 w-full pr-1 pb-1">
                     <Button className="bg-green-800 text-white" type="submit"  variant="contained" >Submit</Button>

@@ -13,6 +13,7 @@ export async function addTransactionAction(formData: FormData) {
     const coin = formData.get('coin') as string;
     const quantity = formData.get('quantity') as string;
     const price_per_coin = formData.get('price_per_coin') as string;
+    const total = formData.get('total') as string;
 
     if (!coin || !price_per_coin || !quantity) {        
         throw Error("Missing values")
@@ -23,7 +24,8 @@ export async function addTransactionAction(formData: FormData) {
             email: email,
             coin: coin,
             quantity: parseFloat(quantity),
-            price_per_coin: parseFloat(price_per_coin)
+            price_per_coin: parseFloat(price_per_coin),
+            total: parseFloat(total)
         })
 
         revalidatePath('/portfolio')

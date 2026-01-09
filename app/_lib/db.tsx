@@ -8,6 +8,7 @@ export interface Transaction {
     coin: string;
     quantity: number;
     price_per_coin: number;
+    total: number;
     created_at?: string;
 }   
 
@@ -25,5 +26,16 @@ export async function fetchTransactions(): Promise<Transaction[]> {
 
 export async function addTransaction(transaction: Transaction) {
     const sql = neon(`${process.env.DATABASE_URL}`)
-    await sql`INSERT INTO transactions (email, coin, quantity, price_per_coin) VALUES (${transaction.email}, ${transaction.coin}, ${transaction.quantity}, ${transaction.price_per_coin})`
+    await sql`INSERT INTO transactions (email, coin, quantity, price_per_coin, total) VALUES (${transaction.email}, ${transaction.coin}, ${transaction.quantity}, ${transaction.price_per_coin}, ${transaction.total})`
 }
+
+
+
+//SQL CODE TO CREATE AND CALL PROCEDURE FOR CALCULATING PORTFOLIO BALANCE
+// CREATE OR REPLACE FUNCTION calculate_portfolio_balance() RETURNS DECIMAL
+// LANGUAGE SQL
+// AS $$
+//   SELECT SUM(total) FROM transactions;
+// $$;
+
+// SELECT calculate_portfolio_balance();
