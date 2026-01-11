@@ -47,9 +47,9 @@ export function BluechipTable() {
         return coins.map((coin, index) =>
             <TableRow key={index} className="hover:bg-blue-400 cursor-pointer" onClick={() => handleRowClick(coin)}>
                 <TableCell className="w-10">{coin['market_cap_rank']}</TableCell>
-                <TableCell className="h-15 flex flex-row justify-left items-center font-bold">
+                <TableCell className="min-w-50 h-15 flex flex-row justify-left items-center font-bold">
                     <Image className="mr-2" src={coin['image']} alt="Coin Image" width={25} height={25} style={{
-                        width: '8%',
+                        width: '5%',
                         height: 'auto', // This preserves the aspect ratio
                     }} />
                     {coin['name']}
