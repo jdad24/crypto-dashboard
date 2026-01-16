@@ -1,8 +1,9 @@
 'use server'
 import { addTransaction as addTransactionService } from "../_lib/db";
 import { auth } from "@/auth";
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { deleteTransaction } from "../_lib/db";
+import { headers } from "next/headers";
 
 export async function addTransactionAction(formData: FormData) {
     const email = (await auth())?.['user']?.['email'] || '';
@@ -32,4 +33,10 @@ export async function addTransactionAction(formData: FormData) {
     } catch (e) {
         console.error(e)        
     }
+}
+
+export async function deleteTransactionAction(id:number) {
+    const path = (await headers()).get('referer') || '/portfolio';
+    await deleteTransaction(id);
+    revalidatePath(path)
 }

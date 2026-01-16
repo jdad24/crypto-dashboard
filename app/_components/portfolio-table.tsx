@@ -10,6 +10,7 @@ import Paper from '@mui/material/Paper';
 import { Transaction } from '../_lib/db';
 import { useEffect, useState } from 'react';
 import { convertToCurrency } from '../_lib/utils';
+import { useRouter } from 'next/navigation';
 
 interface Holding {
     coin: string;
@@ -20,10 +21,9 @@ interface Holding {
 
 export default function PortfolioTable({ className, transactions }: { className?: string, transactions: Transaction[] }) {
     const [portfolio, setPortfolio] = useState<Array<Holding>>([]);
+    const router = useRouter();
 
     useEffect(() => {
-        console.log("Transactions:", transactions);
-
         const holdingTracker: Array<Holding> = [];
         transactions.forEach((transaction) => {
             const exists = holdingTracker.find(record => record.coin === transaction.coin);
@@ -58,7 +58,7 @@ export default function PortfolioTable({ className, transactions }: { className?
                 <TableBody>
                     {
                         portfolio.map((record) => (
-                            <TableRow key={record.coin}>
+                            <TableRow key={record.coin} onClick={() => router.push(`/portfolio/${record.coin}`)} className='cursor-pointer hover:bg-gray-100'>
                                 <TableCell className='font-bold'>{record.coin}</TableCell>
                                 <TableCell>{convertToCurrency(record.total)}</TableCell>
                                 <TableCell>{record.quantity.toLocaleString()}</TableCell>
