@@ -27,16 +27,23 @@ export default function PortfolioTable({ className, transactions }: { className?
         const holdingTracker: Array<Holding> = [];
         transactions.forEach((transaction) => {
             const exists = holdingTracker.find(record => record.coin === transaction.coin);
+
             if (!exists) {
                 holdingTracker.push({
                     coin: transaction.coin,
-                    total: Number(transaction.total),
-                    quantity: Number(transaction.quantity),
+                    total: transaction.type == "Buy" ? Number(transaction.total) : - Number(transaction.total),
+                    quantity: transaction.type == "Buy" ? Number(transaction.quantity) : - Number(transaction.quantity),
                     pricePerCoin: Number(transaction.price_per_coin)
                 });
             } else {
-                holdingTracker[holdingTracker.indexOf(exists)].total += Number(transaction.total);
-                holdingTracker[holdingTracker.indexOf(exists)].quantity += Number(transaction.quantity);
+                if(transaction.type == "Buy") {
+                    holdingTracker[holdingTracker.indexOf(exists)].total += Number(transaction.total);
+                    holdingTracker[holdingTracker.indexOf(exists)].quantity += Number(transaction.quantity);
+                } else if (transaction.type == "Sell") {
+                    holdingTracker[holdingTracker.indexOf(exists)].total -= Number(transaction.total);
+                    holdingTracker[holdingTracker.indexOf(exists)].quantity -= Number(transaction.quantity);
+                }
+
                 holdingTracker[holdingTracker.indexOf(exists)].pricePerCoin = holdingTracker[holdingTracker.indexOf(exists)].total / holdingTracker[holdingTracker.indexOf(exists)].quantity;
             }
         })

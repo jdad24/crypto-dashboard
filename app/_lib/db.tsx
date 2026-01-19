@@ -9,6 +9,7 @@ export interface Transaction {
     quantity: number;
     price_per_coin: number;
     total: number;
+    type: string;
     created_at?: string;
 }
 
@@ -38,7 +39,7 @@ export async function fetchTransactions(coin = ""): Promise<Transaction[]> {
 
 export async function addTransaction(transaction: Transaction) {
     const sql = neon(`${process.env.DATABASE_URL}`)
-    await sql`INSERT INTO transactions (email, coin, quantity, price_per_coin, total) VALUES (${transaction.email}, ${transaction.coin}, ${transaction.quantity}, ${transaction.price_per_coin}, ${transaction.total})`
+    await sql`INSERT INTO transactions (email, coin, quantity, price_per_coin, total, type) VALUES (${transaction.email}, ${transaction.coin}, ${transaction.quantity}, ${transaction.price_per_coin}, ${transaction.total}, ${transaction.type})`
 }
 
 export async function deleteTransaction(id: number) {
