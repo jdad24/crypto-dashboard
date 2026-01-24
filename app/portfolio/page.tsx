@@ -1,6 +1,7 @@
 import { BalanceCard } from "../_components/cards";
 import PortfolioTable from "../_components/portfolio-table";
 import TransactionButton from "../_components/transaction-button";
+import DownloadButton from "../_components/download-transactions-button";
 import { fetchTransactions } from "../_lib/db";
 import { convertToCurrency } from "../_lib/utils";
 
@@ -10,9 +11,10 @@ export default async function Portfolio() {
 
     return (
         <div className="h-screen mx-[5%] flex flex-col">
-            <div className="flex flex-row justify-end my-2">
+            <div className="flex flex-row justify-end my-2 space-x-2">
                 <TransactionButton />
-            </div>
+                <DownloadButton transactions={transactions} />
+            </div>        
             <BalanceCard title="Portfolio Value" value={portfolioValue} />
             <PortfolioTable className="mt-10" transactions={transactions} />
         </div>
