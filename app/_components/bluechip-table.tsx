@@ -19,6 +19,7 @@ interface Coin {
     market_cap: number
     image: string
     name: string
+    price_change_percentage_24h: number    
 }
 
 export function BluechipTable() {
@@ -54,7 +55,8 @@ export function BluechipTable() {
                     }} />
                     {coin['name']}
                 </TableCell>
-                <TableCell>{convertToCurrency(coin['current_price'])}</TableCell>
+                <TableCell>{convertToCurrency(coin['current_price'])}</TableCell>                
+                <TableCell className={coin['price_change_percentage_24h'] >= 0 ? "text-green-700" : "text-red-700"}>{Number(coin['price_change_percentage_24h']).toFixed(2)}%</TableCell>
                 <TableCell>{convertToCurrency(coin['market_cap'], 0)}</TableCell>
             </TableRow>
         )
@@ -69,6 +71,7 @@ export function BluechipTable() {
                         <TableCell className="w-10 font-bold">#</TableCell>
                         <TableCell className="w-20 font-bold">Coin</TableCell>
                         <TableCell className="w-20 font-bold">Price</TableCell>
+                        <TableCell className="w-20 font-bold">24h</TableCell>                      
                         <TableCell className="w-20 font-bold">Market Cap</TableCell>
                     </TableRow>
                 </TableHead>
