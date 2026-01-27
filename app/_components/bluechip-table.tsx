@@ -19,7 +19,7 @@ interface Coin {
     market_cap: number
     image: string
     name: string
-    price_change_percentage_24h: number    
+    price_change_percentage_24h: number
 }
 
 export function BluechipTable() {
@@ -45,20 +45,32 @@ export function BluechipTable() {
     }
 
     const renderTableRows = () => {
-        return coins.map((coin, index) =>
-            <TableRow key={index} className="hover:bg-blue-400 cursor-pointer" onClick={() => handleRowClick(coin)}>
-                <TableCell className="w-10">{coin['market_cap_rank']}</TableCell>
-                <TableCell className="min-w-50 h-15 flex flex-row justify-left items-center font-bold">
-                    <Image className="mr-2" src={coin['image']} alt="Coin Image" width={25} height={25} style={{
-                        width: '5%',
-                        height: 'auto', // This preserves the aspect ratio
-                    }} />
-                    {coin['name']}
-                </TableCell>
-                <TableCell>{convertToCurrency(coin['current_price'])}</TableCell>                
-                <TableCell className={coin['price_change_percentage_24h'] >= 0 ? "text-green-700" : "text-red-700"}>{Number(coin['price_change_percentage_24h']).toFixed(2)}%</TableCell>
-                <TableCell>{convertToCurrency(coin['market_cap'], 0)}</TableCell>
-            </TableRow>
+        return coins.map((coin, index) => {
+            const textColor = coin['price_change_percentage_24h'] < 0 ? 'text-red-600' : 'text-green-600'
+            const filePath = coin['price_change_percentage_24h'] < 0 ? '/down-arrow.svg' : '/up-arrow.svg'
+            return (
+                <TableRow key={index} className="h-15 hover:bg-blue-400 cursor-pointer" onClick={() => handleRowClick(coin)}>
+                    <TableCell className="w-10">{coin['market_cap_rank']}</TableCell>
+                    <TableCell className="h-15 min-w-50 font-bold">
+                        <div className="flex flex-row justify-left items-center">
+                            <Image className="mr-2" src={coin['image']} alt="Coin Image" width={25} height={25} style={{
+                                width: '5%',
+                                height: 'auto', // This preserves the aspect ratio
+                            }} />
+                            {coin['name']}
+                        </div>
+                    </TableCell>
+                    <TableCell>{convertToCurrency(coin['current_price'])}</TableCell>
+                    <TableCell className={`${textColor} h-15`}>
+                        <div className="flex flex-row items-center">
+                            <Image src={filePath} height={15} width={15} alt="Profile" className="mr-2" />
+                            {Math.abs(Number(coin['price_change_percentage_24h'])).toFixed(2)}%
+                        </div>
+                    </TableCell>
+                    <TableCell>{convertToCurrency(coin['market_cap'], 0)}</TableCell>
+                </TableRow>
+            )
+        }
         )
     }
 
@@ -71,7 +83,7 @@ export function BluechipTable() {
                         <TableCell className="w-10 font-bold">#</TableCell>
                         <TableCell className="w-20 font-bold">Coin</TableCell>
                         <TableCell className="w-20 font-bold">Price</TableCell>
-                        <TableCell className="w-20 font-bold">24h</TableCell>                      
+                        <TableCell className="w-20 font-bold">24h</TableCell>
                         <TableCell className="w-20 font-bold">Market Cap</TableCell>
                     </TableRow>
                 </TableHead>
