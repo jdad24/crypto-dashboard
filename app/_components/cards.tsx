@@ -5,7 +5,7 @@ import { convertToCurrency } from "@/app/_lib/utils"
 import { useEffect, useState } from "react";
 
 interface CardProps { title?: string, value?: string, className?: string }
-interface CoinDataCardProps { marketCap: string, circulatingSupply: string, totalSupply: string, maxSupply: string, className?: string }
+interface CoinDataCardProps { marketCap: string, circulatingSupply: string, totalSupply: string, maxSupply: string, ath: string, high_24h: string, low_24h: string, className?: string }
 
 export function HeaderCard({ title, className }: { title: string, className?: string }) {
     return (
@@ -52,9 +52,9 @@ export function MarketcapCard({ className }: CardProps) {
     )
 }
 
-export function CoinDataCard({ marketCap, circulatingSupply, totalSupply, maxSupply, className }: CoinDataCardProps) {
+export function CoinDataCard({ marketCap, circulatingSupply, totalSupply, maxSupply, className, ath, high_24h, low_24h }: CoinDataCardProps) {
     return (
-        <Card className="flex flex-col justify-evenly bg-gray-100 w-100 h-50 p-3 font-bold">
+        <Card className={`${className}flex flex-col justify-evenly bg-gray-100 w-100 h-70 p-3 font-bold`}>
             <CardContent>
                 <div className="flex flex-row justify-between border-b-1 border-gray-400">
                     <div className="w-40">Market Cap</div>
@@ -70,7 +70,21 @@ export function CoinDataCard({ marketCap, circulatingSupply, totalSupply, maxSup
                 </div>
                 <div className="flex flex-row justify-between border-b-1 border-gray-400">
                     <div className="w-40">Max Supply</div>
-                    <div>{maxSupply}</div>
+                    <div>{maxSupply != "0" ? maxSupply : "Infinite"}</div>
+                </div>
+            </CardContent>
+            <CardContent>
+                <div className="flex flex-row justify-between border-b-1 border-gray-400">
+                    <div className="w-40">All Time High</div>
+                    <div>{ath}</div>
+                </div>
+                <div className="flex flex-row justify-between border-b-1 border-gray-400">
+                    <div className="w-40">24 Hour High</div>
+                    <div>{high_24h}</div>
+                </div>
+                <div className="flex flex-row justify-between border-b-1 border-gray-400">
+                    <div className="w-40">24 Hour Low</div>
+                    <div>{low_24h}</div>
                 </div>
             </CardContent>
         </Card>
