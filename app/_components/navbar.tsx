@@ -5,6 +5,8 @@ import Image from "next/image"
 import { AppBar, Toolbar, Button, Menu, MenuItem } from "@mui/material"
 import { useState } from "react"
 import { signOut } from "next-auth/react"
+import InsertChartIcon from '@mui/icons-material/InsertChart';
+import WorkIcon from '@mui/icons-material/Work';
 
 export default function Navbar({ email }: { email: string | null }) {
     const [menuOpen, setMenuOpen] = useState<boolean>(false)
@@ -44,8 +46,8 @@ export default function Navbar({ email }: { email: string | null }) {
         <AppBar position="sticky" className="font-bold">
             <Toolbar>
                 <div className="flex flex-row items-center justify-evenly w-full h-full">
-                    <Link href="/">Market</Link>
-                    {email ? <Link href="/portfolio">Portfolio</Link> : null}
+                    <Link href="/"><InsertChartIcon className="mr-2" />Market</Link>
+                    {email ? <Link href="/portfolio"><WorkIcon className="mr-2" />Portfolio</Link> : null}
                 </div>
                 <Button id="basic-button" className="pointer-cursor" startIcon={UserImage} onClick={handleClick}>
                     {renderMenu()}
