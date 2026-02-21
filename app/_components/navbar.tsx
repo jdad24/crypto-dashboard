@@ -7,6 +7,7 @@ import { useState } from "react"
 import { signOut } from "next-auth/react"
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import WorkIcon from '@mui/icons-material/Work';
+import ArticleIcon from '@mui/icons-material/Article';
 
 export default function Navbar({ email }: { email: string | null }) {
     const [menuOpen, setMenuOpen] = useState<boolean>(false)
@@ -47,6 +48,7 @@ export default function Navbar({ email }: { email: string | null }) {
             <Toolbar>
                 <div className="flex flex-row items-center justify-evenly w-full h-full">
                     <Link href="/"><InsertChartIcon className="mr-2" />Market</Link>
+                    <Link href="/news"><ArticleIcon className="mr-2" />News</Link>
                     {email ? <Link href="/portfolio"><WorkIcon className="mr-2" />Portfolio</Link> : null}
                 </div>
                 <Button id="basic-button" className="pointer-cursor" startIcon={UserImage} onClick={handleClick}>
