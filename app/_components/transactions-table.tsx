@@ -12,10 +12,10 @@ import { Transaction } from '../_lib/db';
 import { deleteTransactionAction } from '../_lib/actions';
 import { convertToCurrency } from '../_lib/utils';
 
-export default function TransactionTable({ transactions }: { transactions: Transaction[] }) {
+export default function TransactionTable({ transactions, className }: { transactions: Transaction[], className?: string }) {
 
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className={className}>
             <Table>
                 <TableHead>
                     <TableRow>
