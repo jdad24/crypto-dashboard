@@ -64,7 +64,7 @@ export default function CoinProfileContent({ coin }: ProfileContentProps) {
     }, [])
 
     return (
-        <div className="mx-[5%] my-10 flex flex-row justify-between">
+        <div className="mx-[5%] my-10 flex md:flex-row flex-col justify-between">
             <div className="flex flex-col">
                 <div className="mb-10">
                     <h1 className="flex flex-row justify-between items-center">
@@ -86,7 +86,7 @@ export default function CoinProfileContent({ coin }: ProfileContentProps) {
                     low_24h={convertToCurrency(data['low_24h'], 2)}
                 />
             </div>
-            <AreaChart chartData={chartData} />
+            <AreaChart className="md:w-auto" chartData={chartData} />
         </div>
     )
 }

@@ -10,11 +10,12 @@ type AreaData = {
     value: number
 }
 
-export default function AreaChart({ chartData }: {
+export default function AreaChart({ chartData, className }: {
     chartData: {
         prices: Array<Array<number>>,
         market_caps: Array<Array<number>>
-    }
+    },
+    className?: string
 }) {
 
     // const [data, setData] = useState<Array<CandleData>>([])
@@ -66,7 +67,7 @@ export default function AreaChart({ chartData }: {
     };
 
     return (
-        <div className='border-2 border-gray-400' ref={chartRef}>
+        <div className={`border-2 border-gray-400 ${className}`} ref={chartRef}>
             <Tabs style={{ backgroundColor: "white" }} value={tabIndex} onChange={handleTabChange}>
                 <Tab label="Price" />
                 <Tab label="Market Cap" />
