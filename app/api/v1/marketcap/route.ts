@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
             }
         }
 
-        throw new Error("Total marketcap fetch failure")
+        // throw new Error("Total market cap fetch failure")
     } catch (e) {
         console.error(e)
         return NextResponse.json(String(e))

@@ -38,7 +38,7 @@ export function BluechipTable() {
         }
 
         fetchCoins()
-        setInterval(fetchCoins, 10000) // Refresh data every 10 seconds
+        setInterval(fetchCoins, 60000) // Refresh data every 60 seconds
     }, [])
 
     const handleRowClick = (coin: { id: string }) => {
