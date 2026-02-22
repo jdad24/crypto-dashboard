@@ -47,9 +47,9 @@ export default function Navbar({ email }: { email: string | null }) {
         <AppBar position="sticky" className="font-bold">
             <Toolbar>
                 <div className="flex flex-row items-center justify-evenly w-full h-full">
-                    <Link href="/"><InsertChartIcon className="mr-2" />Market</Link>
-                    <Link href="/news"><ArticleIcon className="mr-2" />News</Link>
-                    {email ? <Link href="/portfolio"><WorkIcon className="mr-2" />Portfolio</Link> : null}
+                    <Link href="/"><InsertChartIcon className="mr-2 fill-amber-600" />Market</Link>
+                    <Link href="/news"><ArticleIcon className="mr-2 fill-green-600" />News</Link>
+                    {email ? <Link href="/portfolio"><WorkIcon className="mr-2 fill-gray-600" />Portfolio</Link> : null}
                 </div>
                 <Button id="basic-button" className="pointer-cursor" startIcon={UserImage} onClick={handleClick}>
                     {renderMenu()}
