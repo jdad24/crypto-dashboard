@@ -32,14 +32,17 @@ export function MarketcapCard({ className }: CardProps) {
     const [marketCap, setMarketCap] = useState("-")
 
     useEffect(() => {
-        (async () => {
+        const fetchMarketCap = async () => {
             try {
-                const response = await fetch(`/api/v1/marketcap`)
+                const response = await fetch(`/api/v1/marketcap`, { cache: "no-store" })
                 setMarketCap(convertToCurrency(await response.json(), 0))
             } catch (e) {
                 setMarketCap("-")
             }
-        })()
+        }
+
+        fetchMarketCap()
+        setInterval(fetchMarketCap, 10000) // Refresh data every 10 seconds
     })
 
     return (

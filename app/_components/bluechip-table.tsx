@@ -29,7 +29,7 @@ export function BluechipTable() {
     useEffect(() => {
         const fetchCoins = async () => {
             try {
-                const response = await fetch(`/api/v1/coins`)
+                const response = await fetch(`/api/v1/coins`, { cache: "no-store" })
                 const data: Array<Coin> = await response.json()
                 setCoins(data)
             } catch (e) {
@@ -38,6 +38,7 @@ export function BluechipTable() {
         }
 
         fetchCoins()
+        setInterval(fetchCoins, 10000) // Refresh data every 10 seconds
     }, [])
 
     const handleRowClick = (coin: { id: string }) => {
