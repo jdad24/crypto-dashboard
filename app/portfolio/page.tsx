@@ -40,7 +40,10 @@ export default async function Portfolio() {
                 <DownloadButton transactions={transactions} />
             </div>
             <BalanceCard title="Portfolio Value" value={currentPortfolioValue} />
-            <PortfolioTable className="mt-10" coinData={coinData} transactions={transactions} />
+            <div className="rounded-lg shadow-black shadow-lg p-8 my-4 bg-blue-400/80">
+                <h2 className="text-2xl font-bold mb-4">Your Holdings</h2>
+                <PortfolioTable className="mt-10" coinData={coinData} transactions={transactions} />
+            </div>
         </div>
     )
 }

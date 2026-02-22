@@ -8,9 +8,12 @@ export default async function Page({ params }: { params: { coin: string } }) {
     const transactions = await fetchTransactions(coin);
 
     return (
-        <>
-            <CryptoBreadcrumbs className="font-bold text-md m-6 mb-10" coin={coin} />
-            <TransactionTable className="w-[95%] mx-auto" transactions={transactions} />
-        </>
+        <div className="h-screen mx-[5%] flex flex-col">
+            <CryptoBreadcrumbs className="font-bold text-md m-6 ml-0 mb-5" coin={coin} />
+            <div className="rounded-lg shadow-black shadow-lg p-8 my-4 bg-blue-400/80">
+                <h2 className="text-2xl font-bold mb-4">Your Transactions</h2>
+                <TransactionTable className="w-[95%] mx-auto" transactions={transactions} />
+            </div>
+        </div>
     )
 }
