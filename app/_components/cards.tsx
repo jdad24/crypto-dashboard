@@ -59,7 +59,58 @@ export function MarketcapCard({ className }: CardProps) {
     )
 }
 
-export function TrendingCard({ title, value, className }: CardProps) {
+export function TopGainersCard({ title, className }: CardProps) {
+    const [gainers, setGainers] = useState([])
+
+    useEffect(() => {
+        const fetchGainers = async () => {
+            try {
+                const response = await fetch(`/api/v1/coins`, { cache: "no-store" })
+                const data = await response.json()
+                if (data.length > 0) {                    
+                    const sortedGainers = data.sort((a: any, b: any) => b.price_change_percentage_24h - a.price_change_percentage_24h)
+                    const topGainers = sortedGainers.slice(0, 3)
+                    setGainers(topGainers)
+                } else {
+                    setGainers([])
+                }
+            } catch (e) {
+                setGainers([])
+            }
+        }
+
+        fetchGainers()
+        setInterval(fetchGainers, 60000) // Refresh data every 60 seconds
+    }, [])
+
+    return (
+        <Card className={`bg-gray-100 flex flex-col justify-start w-100 h-40 pl-4 ${className}`}>
+            <CardContent>
+                <div className="font-bold text-gray-600 text-lg mb-2">{title}</div> 
+                {gainers.map((coin: any, index) => {
+                    const coinName = coin.name
+                    const priceChange = coin.price_change_percentage_24h.toFixed(2)
+                    const filePath = priceChange < 0 ? '/down-arrow.svg' : '/up-arrow.svg'
+                    const textColor = priceChange < 0 ? 'text-red-600' : 'text-green-600'
+
+                    return (
+                        <div key={index} className="flex flex-row items-center justify-between p-1">
+                            <div className="flex flex-row gap-2">
+                                <img src={coin.image} alt={coin.name} className="w-5 h-5" />
+                                <div className="font-bold">{coinName}</div>
+                            </div>
+                            <div className={`${textColor} font-bold`}>
+                                <Image src={filePath} alt="Price Change" width={12} height={12} className="mr-1 inline" />{priceChange}%
+                            </div>
+                        </div>
+                    )
+                })}
+            </CardContent>
+        </Card>
+    )
+}
+
+export function TrendingCard({ title, className }: CardProps) {
     const [trending, setTrending] = useState([])
 
     useEffect(() => {
