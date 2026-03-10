@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { convertToCurrency } from "@/app/_lib/utils";
 import { useRouter } from "next/navigation";
@@ -26,19 +26,30 @@ export function BluechipTable() {
     const [coins, setCoins] = useState<Array<Coin>>([])
     const router = useRouter()
 
+    const loaderRef = useRef(null)
+
+    const fetchCoins = async () => {
+        try {
+            const response = await fetch(`/api/v1/coins`, { cache: "no-store" })
+            const data: Array<Coin> = await response.json()
+            setCoins(data)
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
     useEffect(() => {
-        const fetchCoins = async () => {
-            try {
-                const response = await fetch(`/api/v1/coins`, { cache: "no-store" })
-                const data: Array<Coin> = await response.json()
-                setCoins(data)
-            } catch (e) {
-                console.error(e)
-            }
+        const observer = new IntersectionObserver(entry => {
+            console.log(entry)
+        })
+        if (loaderRef.current) {
+            observer.observe(loaderRef.current)
         }
 
         fetchCoins()
         setInterval(fetchCoins, 60000) // Refresh data every 60 seconds
+
+        return () => observer.disconnect()
     }, [])
 
     const handleRowClick = (coin: { id: string }) => {
@@ -90,6 +101,7 @@ export function BluechipTable() {
                 </TableHead>
                 <TableBody className="text-left">
                     {renderTableRows()}
+                    <TableRow ref={loaderRef}><TableCell>Loading...</TableCell></TableRow>
                 </TableBody>
             </Table>
         </TableContainer>
