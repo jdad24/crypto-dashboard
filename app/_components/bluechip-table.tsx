@@ -25,6 +25,7 @@ interface Coin {
 export function BluechipTable() {
     const [coins, setCoins] = useState<Array<Coin>>([])
     const router = useRouter()
+    const [color, setColor] = useState('bg-red-400')
 
     const loaderRef = useRef(null)
 
@@ -39,18 +40,31 @@ export function BluechipTable() {
     }
 
     useEffect(() => {
-        const observer = new IntersectionObserver(entry => {
-            console.log(entry)
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const name = (entry.target as HTMLElement).dataset.name
+                    if (name == '50') {
+                        setColor('bg-green-200')
+                    }
+                }
+            })
+
         })
+        const rows = document.querySelectorAll('.h-15')
+        rows.forEach(row => observer.observe(row))
+
         if (loaderRef.current) {
             observer.observe(loaderRef.current)
         }
 
-        fetchCoins()
-        setInterval(fetchCoins, 60000) // Refresh data every 60 seconds
+        if (color == 'bg-red-400') {
+            fetchCoins()
+            setInterval(fetchCoins, 60000) // Refresh data every 60 seconds
+        }
 
         return () => observer.disconnect()
-    }, [])
+    }, [coins])
 
     const handleRowClick = (coin: { id: string }) => {
         router.push(`/coins/${coin['id']}`)
@@ -60,8 +74,9 @@ export function BluechipTable() {
         return coins.map((coin, index) => {
             const textColor = coin['price_change_percentage_24h'] < 0 ? 'text-red-600' : 'text-green-600'
             const filePath = coin['price_change_percentage_24h'] < 0 ? '/down-arrow.svg' : '/up-arrow.svg'
+
             return (
-                <TableRow key={index} className="h-15 hover:bg-blue-400 cursor-pointer" onClick={() => handleRowClick(coin)}>
+                <TableRow data-name={index} key={index} className={`h-15 ${color} hover:bg-blue-400 cursor-pointer`} onClick={() => handleRowClick(coin)}>
                     <TableCell className="w-10">{coin['market_cap_rank']}</TableCell>
                     <TableCell className="h-15 min-w-50 font-bold">
                         <div className="flex flex-row justify-left items-center">
