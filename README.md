@@ -1,56 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Crypto Dashboard
 
-## Getting Started
+A comprehensive cryptocurrency market and portfolio tracking application built with Next.js 16, TypeScript, and modern web technologies.
 
-First, run the development server:
+## Production Deployment UI
+- `https://crypto-dashboard-six-lyart.vercel.app/`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Features
+
+- **Real-time Market Data**: Track cryptocurrency prices, market caps, and trends
+- **Portfolio Management**: Monitor your crypto investments and transactions
+- **Interactive Charts**: Visualize price history with lightweight-charts
+- **Top 100 Cryptocurrencies**: Browse and analyze the most popular coins
+- **Authentication**: Secure user accounts with NextAuth
+- **Responsive Design**: Mobile-friendly interface with Tailwind CSS and Material-UI
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 16 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS + Material-UI
+- **Authentication**: NextAuth.js
+- **Database**: Neon (PostgreSQL)
+- **Charts**: Lightweight Charts
+- **Deployment**: Vercel
+
+## 📦 Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd crypto-dashboard
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Setup**
+   Create a `.env.local` file with the following variables:
+   ```env
+   # Database
+   DATABASE_URL=your_neon_database_url
+
+   # NextAuth
+   NEXTAUTH_SECRET=your_nextauth_secret
+   NEXTAUTH_URL=http://localhost:3000
+
+   # API Keys (if needed for external crypto APIs)
+   COINGECKO_API_KEY=your_api_key
+   ```
+
+4. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 🏗️ Project Structure
+
+```
+crypto-dashboard/
+├── app/                    # Next.js app directory
+│   ├── _components/        # Reusable UI components
+│   ├── _lib/              # Utility functions and database
+│   ├── _types/            # TypeScript type definitions
+│   ├── account/           # Authentication pages
+│   ├── api/               # API routes
+│   ├── coins/             # Coin detail pages
+│   ├── news/              # News page
+│   └── portfolio/         # Portfolio management
+├── public/                # Static assets
+└── ...config files
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📡 API Endpoints
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `GET /api/v1/coins` - Get cryptocurrency data
+- `GET /api/v1/coins/history` - Get price history
+- `GET /api/v1/marketcap` - Get market capitalization data
+- `GET /api/v1/trending` - Get trending cryptocurrencies
+- `GET/POST /api/auth/[...nextauth]` - Authentication
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Available Scripts
 
-## Learn More
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
-To learn more about Next.js, take a look at the following resources:
+## 🎨 Key Components
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **MarketcapCard**: Displays total market capitalization
+- **TrendingCard**: Shows trending cryptocurrencies
+- **TopGainersCard**: Lists top performing coins
+- **BluechipTable**: Table of top 100 cryptocurrencies
+- **PortfolioTable**: User portfolio management
+- **TransactionModal**: Add/edit transactions
+- **AreaChart**: Price history visualization
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🔐 Authentication
 
-## Deploy on Vercel
+The app uses NextAuth.js for authentication with support for:
+- Email/password login
+- Secure session management
+- Protected routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📊 Charts & Visualization
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Interactive price charts using Lightweight Charts
+- Real-time data updates
+- Historical price analysis
+- Portfolio performance tracking
 
-## Sessions
+## 🤝 Contributing
 
-Sessions will be stored using in-memory storage. Will perhaps make a change to redis or mongodb at a later date
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## UI Components and Styling
+## 📄 License
 
-UI enhanced using tailwind and material ui
+This project is private and proprietary.
 
-## Database
+## 📞 Support
 
-Neon postgres database on vercel used for data storage
-
-## Crypto Market Data
-
-Data retrieved using coingecko api
-
-## Environment variables
-
-Insert coingecko api key into `.env` file. Also ensure vercel environment variables are propertly inserted for vercel deployments
+For support or questions, please contact the development team.
