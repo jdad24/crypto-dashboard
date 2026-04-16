@@ -2,7 +2,7 @@ import { MarketcapCard, TopGainersCard, TrendingCard } from "./_components/cards
 import { BluechipTable } from "./_components/bluechip-table";
 import StarIcon from '@mui/icons-material/Star';
 
-export default async function Home() {
+export default function Home() {
 
   return (
     <main className="flex flex-col mx-[5%] gap-10 mt-5">
