@@ -44,11 +44,11 @@ export default function Navbar({ email }: { email: string | null }) {
 
     const UserImage = <Image src="/user.svg" height={25} width={25} alt="Profile" className="cursor-pointer mr-5 hover:scale-120" />
     return (
-        <AppBar position="sticky" className="font-bold rounded-lg bg-gradient-to-r from-blue-500 to-blue-300 shadow-lg">
+        <AppBar position="sticky" className="font-bold bg-gradient-to-r from-blue-500 to-blue-300 shadow-lg">
             <Toolbar>
                 <div className="flex flex-row items-center justify-evenly w-full h-full">
-                    <Link href="/"><InsertChartIcon className="mr-2 fill-amber-600" />Market</Link>
-                    <Link href="/explorer"><ArticleIcon className="mr-2 fill-black" />Explorer</Link>
+                    <Link href="/"><InsertChartIcon className="mr-2 fill-slate-800" />Market</Link>
+                    <Link href="/explorer"><ArticleIcon className="mr-2 fill-slate-800" />Explorer</Link>
                     {email ? <Link href="/portfolio"><WorkIcon className="mr-2 fill-gray-600" />Portfolio</Link> : null}
                 </div>
                 <Button id="basic-button" className="pointer-cursor" startIcon={UserImage} onClick={handleClick}>
