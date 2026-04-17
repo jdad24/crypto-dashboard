@@ -68,12 +68,22 @@ export default function Explorer() {
                             <div className="p-2 bg-blue-100 rounded-lg">
                                 <SwapCallsIcon sx={{ fontSize: 24, color: '#3b82f6' }} />
                             </div>
+                            <h3 className="font-semibold text-slate-900">Wallet Balance</h3>
+                        </div>
+                        <p className="text-sm text-slate-600">Check ETH balance for any wallet address</p>
+                    </div>
+
+                    {/* <div className="p-5 rounded-lg bg-white border border-slate-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="p-2 bg-blue-100 rounded-lg">
+                                <SwapCallsIcon sx={{ fontSize: 24, color: '#3b82f6' }} />
+                            </div>
                             <h3 className="font-semibold text-slate-900">Live Transactions</h3>
                         </div>
                         <p className="text-sm text-slate-600">View real-time transaction data across the network</p>
-                    </div>
+                    </div> */}
 
-                    <div className="p-5 rounded-lg bg-white border border-slate-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+                    {/* <div className="p-5 rounded-lg bg-white border border-slate-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
                         <div className="flex items-center gap-3 mb-3">
                             <div className="p-2 bg-blue-100 rounded-lg">
                                 <BlockIcon sx={{ fontSize: 24, color: '#3b82f6' }} />
@@ -81,9 +91,9 @@ export default function Explorer() {
                             <h3 className="font-semibold text-slate-900">Block Details</h3>
                         </div>
                         <p className="text-sm text-slate-600">Inspect block information, rewards, and timestamps</p>
-                    </div>
+                    </div> */}
 
-                    <div className="p-5 rounded-lg bg-white border border-slate-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+                    {/* <div className="p-5 rounded-lg bg-white border border-slate-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
                         <div className="flex items-center gap-3 mb-3">
                             <div className="p-2 bg-blue-100 rounded-lg">
                                 <AnalyticsIcon sx={{ fontSize: 24, color: '#3b82f6' }} />
@@ -91,7 +101,7 @@ export default function Explorer() {
                             <h3 className="font-semibold text-slate-900">Network Stats</h3>
                         </div>
                         <p className="text-sm text-slate-600">Monitor blockchain metrics and network health</p>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
