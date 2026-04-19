@@ -49,11 +49,18 @@ export function MarketcapCard({ className }: CardProps) {
     })
 
     return (
-        <Card className={`bg-gray-100 flex flex-col justify-start w-100 h-40 pl-4 ${className}`}>
-            <CardContent>
-                <div className="font-bold text-gray-600 text-lg p-2">
-                    <PublicIcon className="mr-2 inline fill-green-600" />Total Market Cap</div>
-                <div className="font-bold text-2xl p-2">{marketCap}</div>
+        <Card className={`bg-white/10 backdrop-blur-md border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden w-full max-w-sm ${className}`}>
+            <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-green-500/20 rounded-lg">
+                        <PublicIcon className="text-green-400 w-6 h-6" />
+                    </div>
+                    <div>
+                        <div className="font-semibold text-white/80 text-sm">Total Market Cap</div>
+                        <div className="text-xs text-white/60">Global cryptocurrency value</div>
+                    </div>
+                </div>
+                <div className="text-2xl font-bold text-white">{marketCap}</div>
             </CardContent>
         </Card>
     )
@@ -84,27 +91,37 @@ export function TopGainersCard({ title, className }: CardProps) {
     }, [])
 
     return (
-        <Card className={`bg-gray-100 flex flex-col justify-start w-100 h-40 pl-4 ${className}`}>
-            <CardContent>
-                <div className="font-bold text-gray-600 text-lg mb-2">{title}</div> 
-                {gainers.map((coin: any, index) => {
-                    const coinName = coin.name
-                    const priceChange = coin.price_change_percentage_24h.toFixed(2)
-                    const filePath = priceChange < 0 ? '/down-arrow.svg' : '/up-arrow.svg'
-                    const textColor = priceChange < 0 ? 'text-red-600' : 'text-green-600'
+        <Card className={`bg-white/10 backdrop-blur-md border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden w-full max-w-sm ${className}`}>
+            <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-orange-500/20 rounded-lg">
+                        <WhatshotIcon className="text-orange-400 w-6 h-6" />
+                    </div>
+                    <div>
+                        <div className="font-semibold text-white/80 text-sm">{title}</div>
+                        <div className="text-xs text-white/60">Top performing coins</div>
+                    </div>
+                </div>
+                <div className="space-y-3">
+                    {gainers.map((coin: any, index) => {
+                        const coinName = coin.name
+                        const priceChange = coin.price_change_percentage_24h.toFixed(2)
+                        const filePath = priceChange < 0 ? '/down-arrow.svg' : '/up-arrow.svg'
+                        const textColor = priceChange < 0 ? 'text-red-400' : 'text-green-400'
 
-                    return (
-                        <div key={index} className="flex flex-row items-center justify-between p-1">
-                            <div className="flex flex-row gap-2">
-                                <img src={coin.image} alt={coin.name} className="w-5 h-5" />
-                                <div className="font-bold">{coinName}</div>
+                        return (
+                            <div key={index} className="flex flex-row items-center justify-between p-2 bg-white/5 rounded-lg">
+                                <div className="flex flex-row gap-3 items-center">
+                                    <img src={coin.image} alt={coin.name} className="w-6 h-6 rounded-full" />
+                                    <div className="font-medium text-white text-sm">{coinName}</div>
+                                </div>
+                                <div className={`${textColor} font-bold text-sm flex items-center`}>
+                                    <Image src={filePath} alt="Price Change" width={12} height={12} className="mr-1" />{priceChange}%
+                                </div>
                             </div>
-                            <div className={`${textColor} font-bold`}>
-                                <Image src={filePath} alt="Price Change" width={12} height={12} className="mr-1 inline" />{priceChange}%
-                            </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
+                </div>
             </CardContent>
         </Card>
     )
@@ -133,29 +150,37 @@ export function TrendingCard({ title, className }: CardProps) {
     }, [])
 
     return (
-        <Card className={`bg-gray-100 flex flex-col justify-start w-100 h-40 pl-4 ${className}`}>
-            <CardContent>
-                <div className="flex flex-row items-center font-bold text-gray-600 text-lg mb-2">
-                    <WhatshotIcon className="mr-2 fill-orange-500" />{title}
+        <Card className={`bg-white/10 backdrop-blur-md border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden w-full max-w-sm ${className}`}>
+            <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-blue-500/20 rounded-lg">
+                        <WhatshotIcon className="text-blue-400 w-6 h-6" />
+                    </div>
+                    <div>
+                        <div className="font-semibold text-white/80 text-sm">{title}</div>
+                        <div className="text-xs text-white/60">Most searched coins</div>
+                    </div>
                 </div>
-                {trending.map((coin: any, index) => {
-                    const coinName = coin.item.name
-                    const price24Change = coin.item.data.price_change_percentage_24h.usd.toFixed(2)
-                    const filePath = price24Change < 0 ? '/down-arrow.svg' : '/up-arrow.svg'
-                    const textColor = price24Change < 0 ? 'text-red-600' : 'text-green-600'
+                <div className="space-y-3">
+                    {trending.map((coin: any, index) => {
+                        const coinName = coin.item.name
+                        const price24Change = coin.item.data.price_change_percentage_24h.usd.toFixed(2)
+                        const filePath = price24Change < 0 ? '/down-arrow.svg' : '/up-arrow.svg'
+                        const textColor = price24Change < 0 ? 'text-red-400' : 'text-green-400'
 
-                    return (
-                        <div key={index} className="flex flex-row items-center justify-between p-1">
-                            <div className="flex flex-row gap-2">
-                                <img src={coin.item.small} alt={coin.item.name} className="w-5 h-5" />
-                                <div className="font-bold">{coinName}</div>
+                        return (
+                            <div key={index} className="flex flex-row items-center justify-between p-2 bg-white/5 rounded-lg">
+                                <div className="flex flex-row gap-3 items-center">
+                                    <img src={coin.item.small} alt={coin.item.name} className="w-6 h-6 rounded-full" />
+                                    <div className="font-medium text-white text-sm">{coinName}</div>
+                                </div>
+                                <div className={`${textColor} font-bold text-sm flex items-center`}>
+                                    <Image src={filePath} alt="Price Change" width={12} height={12} className="mr-1" />{price24Change}%
+                                </div>
                             </div>
-                            <div className={`${textColor} font-bold`}>
-                                <Image src={filePath} alt="Trending Coin" width={12} height={12} className="mr-1 inline" />{price24Change}%
-                            </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
+                </div>
             </CardContent>
         </Card>
     )
