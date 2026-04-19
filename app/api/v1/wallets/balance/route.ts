@@ -7,8 +7,6 @@ export async function GET(req: Request) {
     const address = url.searchParams.get("address");
     // const address = "0x4f3adCB5812Ed3d785a6E0e87EAfd79dBac896A4"
 
-    const baseUrl = url.origin;
-
     const res = await fetch(
         `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
         {
@@ -23,7 +21,10 @@ export async function GET(req: Request) {
         }
     );
 
+    console.log(res)
+
     const data = await res.json();
+    console.log(data)
 
     if (!data.result) {
         return Response.json({ error: data.error || "No result" }, { status: 500 });
