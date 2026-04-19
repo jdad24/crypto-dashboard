@@ -1,3 +1,5 @@
+import { request } from "https";
+
 export const runtime = "nodejs";
 
 export async function GET(req: Request) {
@@ -30,12 +32,15 @@ export async function GET(req: Request) {
     const wei = BigInt(data.result);
     const eth = Number(wei) / 1e18;
 
-    const priceRes = await fetch(`${baseUrl}/api/v1/coins?id=ethereum`);
+
+    const priceRes = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=ethereum`, {
+        headers: {
+            'x-cg-demo-api-key': `${process.env.CG_API_KEY}`
+        }});
+
     const priceData = await priceRes.json();
     const ethPrice = priceData?.[0]?.current_price || null;
     const usdValue = eth * ethPrice;
-
-    console.log(baseUrl, priceData, priceRes)
 
     return Response.json({ address, eth, usdValue });
 }
