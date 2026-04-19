@@ -12,7 +12,7 @@ export default async function Page({ params }: { params: { coin: string } }) {
             <div className="mx-[5%] py-8">
                 {/* Header Section */}
                 <div className="mb-8">
-                    <CryptoBreadcrumbs className="mb-6" coin={coin} />
+                    <CryptoBreadcrumbs className="mb-6" base="portfolio" coin={coin} />
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-xl flex items-center justify-center">
                             <span className="text-white font-bold text-xl">{coin.charAt(0)}</span>
