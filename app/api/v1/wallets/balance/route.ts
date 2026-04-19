@@ -35,5 +35,7 @@ export async function GET(req: Request) {
     const ethPrice = priceData?.[0]?.current_price || null;
     const usdValue = eth * ethPrice;
 
+    console.log(baseUrl, priceData, priceRes)
+
     return Response.json({ address, eth, usdValue });
 }
