@@ -50,26 +50,23 @@ export function BluechipTable() {
             const textColor = coin['price_change_percentage_24h'] < 0 ? 'text-red-600' : 'text-green-600'
             const filePath = coin['price_change_percentage_24h'] < 0 ? '/down-arrow.svg' : '/up-arrow.svg'
             return (
-                <TableRow key={index} className="h-15 hover:bg-blue-400 cursor-pointer" onClick={() => handleRowClick(coin)}>
-                    <TableCell className="w-10">{coin['market_cap_rank']}</TableCell>
-                    <TableCell className="h-15 min-w-50 font-bold">
-                        <div className="flex flex-row justify-left items-center">
-                            <Image className="mr-2" src={coin['image']} alt="Coin Image" width={25} height={25} style={{
-                                width: '5%',
-                                height: 'auto', // This preserves the aspect ratio
-                            }} />
-                            {coin['name']}
+                <tr key={index} className="hover:bg-white/5 cursor-pointer transition-colors duration-200 border-b border-white/5" onClick={() => handleRowClick(coin)}>
+                    <td className="py-4 px-6 text-white/70 font-medium">{coin['market_cap_rank']}</td>
+                    <td className="py-4 px-6">
+                        <div className="flex items-center gap-3">
+                            <Image className="rounded-full" src={coin['image']} alt="Coin Image" width={32} height={32} />
+                            <span className="font-semibold text-white">{coin['name']}</span>
                         </div>
-                    </TableCell>
-                    <TableCell>{convertToCurrency(coin['current_price'])}</TableCell>
-                    <TableCell className={`${textColor} h-15`}>
-                        <div className="flex flex-row items-center">
-                            <Image src={filePath} height={15} width={15} alt="Profile" className="mr-2" />
+                    </td>
+                    <td className="py-4 px-6 font-semibold text-white">{convertToCurrency(coin['current_price'])}</td>
+                    <td className="py-4 px-6">
+                        <div className={`flex items-center gap-2 font-semibold ${textColor}`}>
+                            <Image src={filePath} height={16} width={16} alt="Price change" />
                             {Math.abs(Number(coin['price_change_percentage_24h'])).toFixed(2)}%
                         </div>
-                    </TableCell>
-                    <TableCell>{convertToCurrency(coin['market_cap'], 0)}</TableCell>
-                </TableRow>
+                    </td>
+                    <td className="py-4 px-6 font-semibold text-white">{convertToCurrency(coin['market_cap'], 0)}</td>
+                </tr>
             )
         }
         )
@@ -77,22 +74,22 @@ export function BluechipTable() {
 
 
     return (
-        <TableContainer component={Paper}>
-            <Table className="w-full">
-                <TableHead className="text-left">
-                    <TableRow>
-                        <TableCell className="w-10 font-bold">#</TableCell>
-                        <TableCell className="w-20 font-bold">Coin</TableCell>
-                        <TableCell className="w-20 font-bold">Price</TableCell>
-                        <TableCell className="w-20 font-bold">24h</TableCell>
-                        <TableCell className="w-20 font-bold">Market Cap</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody className="text-left">
+        <div className="overflow-x-auto">
+            <table className="w-full">
+                <thead className="border-b border-white/10">
+                    <tr>
+                        <th className="text-left py-4 px-6 font-semibold text-white/80">#</th>
+                        <th className="text-left py-4 px-6 font-semibold text-white/80">Coin</th>
+                        <th className="text-left py-4 px-6 font-semibold text-white/80">Price</th>
+                        <th className="text-left py-4 px-6 font-semibold text-white/80">24h</th>
+                        <th className="text-left py-4 px-6 font-semibold text-white/80">Market Cap</th>
+                    </tr>
+                </thead>
+                <tbody>
                     {renderTableRows()}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                </tbody>
+            </table>
+        </div>
     )
 }
 

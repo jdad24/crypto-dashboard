@@ -83,31 +83,133 @@ export default function TransactionModal({ open, setShowModal }: { open: boolean
 
     return (
         <Modal className="flex flex-row justify-center items-center" open={open}>
-            <Box className="relative bg-background text-foreground h-100 w-150 pl-5 rounded-xl" component="form" onSubmit={handleSubmit} action={addTransactionAction}>
-                <h1 className="font-bold text-2xl pt-5 mb-5">New Transaction</h1>
-                <div className="flex flex-row space-x-1">
-                    <Autocomplete
-                        className="w-70"
-                        options={coinSelection.map(coin => coin['name'])}
-                        onChange={(e, newValue) => handleAutocompleteInput(e, newValue)}
-                        renderInput={(params) => <TextField
-                            {...params} label="Select Coin" name="coin" />}
-                        disablePortal
-                        value={coin}
-                    />
-                    <Select labelId="transaction-type-label" label="Buy/Sell" name="type" value={transactionType} defaultValue="Buy" onChange={handleTypeChange}>
-                        <MenuItem value="Buy">Buy</MenuItem>
-                        <MenuItem value="Sell">Sell</MenuItem>
-                    </Select>
+            <Box className="bg-white/10 backdrop-blur-md border border-white/20 text-white h-auto w-full max-w-lg p-8 rounded-xl shadow-2xl" component="form" onSubmit={handleSubmit} action={addTransactionAction}>
+                <h1 className="font-bold text-3xl mb-6 text-center">New Transaction</h1>
+                <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Autocomplete
+                            className="bg-white/5 rounded-lg"
+                            options={coinSelection.map(coin => coin['name'])}
+                            onChange={(e, newValue) => handleAutocompleteInput(e, newValue)}
+                            renderInput={(params) => <TextField
+                                {...params}
+                                label="Select Coin"
+                                name="coin"
+                                InputLabelProps={{
+                                    className: "text-white"
+                                }}
+                                InputProps={{
+                                    ...params.InputProps,
+                                    className: "text-white border-white/30",
+                                    classes: {
+                                        notchedOutline: "border-white/30"
+                                    }
+                                }}
+                            />}
+                            disablePortal
+                            value={coin}
+                        />
+                        <Select
+                            labelId="transaction-type-label"
+                            label="Transaction Type"
+                            name="type"
+                            value={transactionType}
+                            defaultValue="Buy"
+                            onChange={handleTypeChange}
+                            className="bg-white/5 rounded-lg"
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: 'rgba(255, 255, 255, 0.3)',
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: 'rgba(255, 255, 255, 0.5)',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: 'rgba(255, 255, 255, 0.7)',
+                                    },
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: 'white',
+                                },
+                                '& .MuiSelect-select': {
+                                    color: 'white',
+                                },
+                            }}
+                        >
+                            <MenuItem value="Buy">Buy</MenuItem>
+                            <MenuItem value="Sell">Sell</MenuItem>
+                        </Select>
+                    </div>
+                    <div className="space-y-4">
+                        <TextField
+                            fullWidth
+                            label="Total Spent (USD)"
+                            name="total"
+                            onChange={handleTotalChange}
+                            variant="outlined"
+                            className="bg-white/5"
+                            InputLabelProps={{
+                                className: "text-white"
+                            }}
+                            InputProps={{
+                                className: "text-white border-white/30",
+                                classes: {
+                                    notchedOutline: "border-white/30"
+                                }
+                            }}
+                        />
+                        <TextField
+                            fullWidth
+                            label="Quantity"
+                            name="quantity"
+                            onChange={handleQuantityChange}
+                            variant="outlined"
+                            className="bg-white/5"
+                            InputLabelProps={{
+                                className: "text-white"
+                            }}
+                            InputProps={{
+                                className: "text-white border-white/30",
+                                classes: {
+                                    notchedOutline: "border-white/30"
+                                }
+                            }}
+                        />
+                        <TextField
+                            fullWidth
+                            label="Price Per Coin"
+                            name="price_per_coin"
+                            value={pricePerCoin}
+                            variant="outlined"
+                            className="bg-white/5"
+                            InputLabelProps={{
+                                className: "text-white"
+                            }}
+                            InputProps={{
+                                className: "text-white border-white/30",
+                                classes: {
+                                    notchedOutline: "border-white/30"
+                                }
+                            }}
+                        />
+                    </div>
                 </div>
-                <div className="flex flex-col w-70 mt-10 gap-5">
-                    <TextField label="Total Spent (USD)" name="total" onChange={handleTotalChange} />
-                    <TextField label="Quantity" name="quantity" onChange={handleQuantityChange} />
-                    <TextField label="Price Per Coin" name="price_per_coin" value={pricePerCoin} />
-                </div>
-                <div className="absolute flex flex-row justify-end gap-5 absolute bottom-0 left-0 w-full pr-1 pb-1">
-                    <Button className="bg-green-800 text-white" type="submit" variant="contained" >Submit</Button>
-                    <Button className="bg-red-800 text-white" onClick={handleCancel} variant="contained">Cancel</Button>
+                <div className="flex flex-row justify-end gap-4 mt-8">
+                    <Button
+                        className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold px-6 py-2 rounded-lg transition-all duration-300"
+                        type="submit"
+                        variant="contained"
+                    >
+                        Submit
+                    </Button>
+                    <Button
+                        className="bg-red-500/20 hover:bg-red-500/30 text-red-300 hover:text-red-200 font-semibold px-6 py-2 rounded-lg transition-all duration-300 border border-red-500/30"
+                        onClick={handleCancel}
+                        variant="outlined"
+                    >
+                        Cancel
+                    </Button>
                 </div>
             </Box>
         </Modal>

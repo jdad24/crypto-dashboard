@@ -72,38 +72,45 @@ export default function PortfolioTable({ className, transactions, coinData }: { 
     }
 
     return (
-        <TableContainer className={className} component={Paper}>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell className='font-bold'>Coin</TableCell>
-                        <TableCell className='font-bold'>Current Value</TableCell>
-                        <TableCell className='font-bold'>Quantity</TableCell>
-                        <TableCell className='font-bold'>Average Price</TableCell>
-                        <TableCell className='font-bold'>P/L</TableCell>
-                        {/* <TableCell className='font-bold'>Purchase Value</TableCell> */}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
+        <div className="overflow-x-auto">
+            <table className="w-full">
+                <thead className="border-b border-white/10">
+                    <tr>
+                        <th className="text-left py-4 px-6 font-semibold text-white/80">Coin</th>
+                        <th className="text-left py-4 px-6 font-semibold text-white/80">Current Value</th>
+                        <th className="text-left py-4 px-6 font-semibold text-white/80">Quantity</th>
+                        <th className="text-left py-4 px-6 font-semibold text-white/80">Average Price</th>
+                        <th className="text-left py-4 px-6 font-semibold text-white/80">P/L</th>
+                    </tr>
+                </thead>
+                <tbody>
                     {
                         portfolio.map((record) => {
                             const currentValue = calculateCurrentValue(record.coin, record.quantity);
+                            const profitLoss = currentValue - (record.pricePerCoin * record.quantity);
+                            const profitLossColor = profitLoss >= 0 ? 'text-green-400' : 'text-red-400';
+
                             return (
-                                <TableRow key={record.coin} onClick={() => router.push(`/portfolio/${record.coin}`)} className='cursor-pointer hover:bg-gray-100'>
-                                    <TableCell className='font-bold'>{record.coin}</TableCell>
-                                    <TableCell>{convertToCurrency(currentValue)}</TableCell>
-                                    <TableCell>{record.quantity.toLocaleString()}</TableCell>
-                                    <TableCell>{convertToCurrency(record.pricePerCoin)}</TableCell>
-                                    <TableCell>{convertToCurrency(currentValue - (record.pricePerCoin * record.quantity))}</TableCell>
-                                    {/* <TableCell>{convertToCurrency(record.total)}</TableCell> */}
-                                </TableRow>
+                                <tr key={record.coin} onClick={() => router.push(`/portfolio/${record.coin}`)} className='cursor-pointer hover:bg-white/5 transition-colors duration-200 border-b border-white/5'>
+                                    <td className='py-4 px-6'>
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-green-500 rounded-full flex items-center justify-center">
+                                                <span className="text-white font-bold text-sm">{record.coin.charAt(0)}</span>
+                                            </div>
+                                            <span className="font-semibold text-white">{record.coin}</span>
+                                        </div>
+                                    </td>
+                                    <td className='py-4 px-6 font-semibold text-white'>{convertToCurrency(currentValue)}</td>
+                                    <td className='py-4 px-6 text-white/80'>{record.quantity.toLocaleString()}</td>
+                                    <td className='py-4 px-6 text-white/80'>{convertToCurrency(record.pricePerCoin)}</td>
+                                    <td className={`py-4 px-6 font-semibold ${profitLossColor}`}>{convertToCurrency(profitLoss)}</td>
+                                </tr>
                             )
                         })
                     }
-
-                </TableBody>
-            </Table>
-        </TableContainer>
+                </tbody>
+            </table>
+        </div>
     )
 
 }

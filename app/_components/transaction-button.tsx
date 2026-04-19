@@ -13,7 +13,13 @@ export default function TransactionButton() {
 
     return (
         <div>
-            <Button className="h-10 bg-green-800" variant="contained" onClick={handleClick}>New Transaction</Button>
+            <Button
+                className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold px-6 py-2 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl"
+                variant="contained"
+                onClick={handleClick}
+            >
+                New Transaction
+            </Button>
             <TransactionModal open={showModal} setShowModal={setShowModal}/>
         </div>
     )

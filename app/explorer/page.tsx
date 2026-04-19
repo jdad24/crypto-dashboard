@@ -45,124 +45,160 @@ export default function Explorer() {
     };
 
     return (
-        <main className="flex flex-col mx-[5%] gap-10 mt-8 pb-10">
-            {/* Header Section with Features */}
-            <div className="space-y-6">
-                {/* Main Header */}
-                <div className="relative py-8 px-6 rounded-lg bg-gradient-to-r from-blue-500 to-blue-300 shadow-lg shadow-black/40 overflow-hidden">
-                    {/* Background decorative element */}
-                    <div className="absolute inset-0 opacity-10">
-                        <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+        <main className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+            <div className="mx-[5%] py-8 pb-12">
+                {/* Header Section with Features */}
+                <div className="space-y-8">
+                    {/* Main Header */}
+                    <div className="relative py-8 px-8 rounded-xl bg-gradient-to-r from-blue-600 to-green-600 shadow-2xl overflow-hidden">
+                        {/* Background decorative elements */}
+                        <div className="absolute inset-0 opacity-20">
+                            <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+                            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white rounded-full blur-2xl"></div>
+                        </div>
+
+                        <div className="relative z-10 flex items-center gap-6">
+                            <div className="p-4 bg-white/20 rounded-xl backdrop-blur-md">
+                                <ExploreIcon sx={{ fontSize: 40, color: 'white' }} />
+                            </div>
+                            <div className="flex flex-col">
+                                <h1 className="text-4xl font-bold text-white mb-2">Ethereum Blockchain Explorer</h1>
+                                <p className="text-blue-100 text-lg">Real-time blockchain data, transactions & analytics</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="relative z-10 flex items-center gap-4">
-                        <div className="p-3 bg-white/20 rounded-lg backdrop-blur">
-                            <ExploreIcon sx={{ fontSize: 32, color: 'white' }} />
+                    {/* Features Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 p-6 hover:scale-105 cursor-pointer">
+                            <div className="flex items-center gap-4 mb-4">
+                                <div className="p-3 bg-blue-500/20 rounded-lg">
+                                    <SwapCallsIcon sx={{ fontSize: 28, color: '#60a5fa' }} />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-semibold text-white">Wallet Balance</h3>
+                                    <p className="text-white/70">Check ETH balance for any wallet address</p>
+                                </div>
+                            </div>
                         </div>
-                        <div className="flex flex-col">
-                            <h1 className="text-4xl font-bold text-white">Ethereum Blockchain Explorer</h1>
-                            <p className="text-blue-100 text-sm mt-1">Real-time blockchain data, transactions & analytics</p>
+
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 p-6 hover:scale-105 cursor-pointer">
+                            <div className="flex items-center gap-4 mb-4">
+                                <div className="p-3 bg-green-500/20 rounded-lg">
+                                    <ExploreIcon sx={{ fontSize: 28, color: '#34d399' }} />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-semibold text-white">Transaction History</h3>
+                                    <p className="text-white/70">View detailed transaction records</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 p-6 hover:scale-105 cursor-pointer">
+                            <div className="flex items-center gap-4 mb-4">
+                                <div className="p-3 bg-purple-500/20 rounded-lg">
+                                    <SearchIcon sx={{ fontSize: 28, color: '#a78bfa' }} />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-semibold text-white">Block Explorer</h3>
+                                    <p className="text-white/70">Explore blocks and network activity</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Features Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="p-5 rounded-lg bg-white border border-slate-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 hover:cursor-pointer">
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="p-2 bg-blue-100 rounded-lg">
-                                <SwapCallsIcon sx={{ fontSize: 24, color: '#3b82f6' }} />
+                {/* Wallet Balance Lookup */}
+                <div className="mt-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-2xl overflow-hidden">
+                    <div className="p-8 border-b border-white/10">
+                        <h2 className="text-3xl font-bold text-white mb-2">Check Wallet Ethereum Balance</h2>
+                        <p className="text-white/60 text-lg">Enter any Ethereum wallet address to view real-time balance information</p>
+                    </div>
+                    <div className="p-8">
+                        <form onSubmit={handleSearchBalanceSubmit} className="space-y-6">
+                            <div className="flex gap-4">
+                                <input
+                                    type="text"
+                                    value={address}
+                                    onChange={(e) => setAddress(e.target.value)}
+                                    placeholder="Enter wallet address (0x...)"
+                                    className="flex-1 px-6 py-4 rounded-xl border border-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/5 text-white placeholder-white/50 text-lg backdrop-blur-sm"
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold rounded-xl flex items-center gap-3 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    <SearchIcon fontSize="medium" />
+                                    {loading ? 'Searching...' : 'Search'}
+                                </button>
                             </div>
-                            <h3 className="font-semibold text-slate-900">Wallet Balance</h3>
-                        </div>
-                        <p className="text-sm text-slate-600">Check ETH balance for any wallet address</p>
+
+                            {error && (
+                                <div className="p-6 bg-red-500/20 border border-red-500/30 rounded-xl backdrop-blur-sm">
+                                    <p className="text-red-300 text-lg font-medium">{error}</p>
+                                </div>
+                            )}
+
+                            {balance !== null && (
+                                <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-500/10 via-green-500/10 to-teal-500/10 border border-emerald-500/20 shadow-2xl backdrop-blur-md">
+                                    {/* Decorative background elements */}
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-400/20 rounded-full blur-3xl"></div>
+                                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-teal-400/20 rounded-full blur-2xl"></div>
+
+                                    <div className="relative p-8">
+                                        {/* Header */}
+                                        <div className="flex items-center gap-4 mb-8">
+                                            <div className="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                                                <div className="w-4 h-4 bg-emerald-400 rounded-full"></div>
+                                            </div>
+                                            <div>
+                                                <h3 className="text-2xl font-bold text-white">Wallet Balance</h3>
+                                                <p className="text-white/70 text-lg">Real-time Ethereum holdings</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Balance Values */}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                                            {/* ETH Balance */}
+                                            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
+                                                    <span className="text-white/80 font-medium text-lg">Ethereum</span>
+                                                </div>
+                                                <p className="text-3xl font-bold text-white">{balance.eth} ETH</p>
+                                                <p className="text-white/60 mt-2">Native cryptocurrency</p>
+                                            </div>
+
+                                            {/* USD Value */}
+                                            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                                                    <span className="text-white/80 font-medium text-lg">USD Value</span>
+                                                </div>
+                                                <p className="text-3xl font-bold text-white">{convertToCurrency(balance.usdValue)}</p>
+                                                <p className="text-white/60 mt-2">Current market value</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Address and additional info */}
+                                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pt-6 border-t border-white/20">
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-white/60 text-lg">Address:</span>
+                                                <code className="text-lg bg-white/10 px-4 py-2 rounded-lg font-mono text-white border border-white/20">
+                                                    {address}
+                                                </code>
+                                            </div>
+                                            <div className="flex items-center gap-4 text-white/60 text-lg">
+                                                <span>Last updated: {new Date().toLocaleTimeString()}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </form>
                     </div>
                 </div>
-            </div>
-
-            {/* Wallet Balance Lookup */}
-            <div className="rounded-lg shadow-lg p-8 bg-white border border-slate-200">
-                <h2 className="text-2xl font-bold text-slate-900 mb-6">Check Wallet Ethereum Balance</h2>
-                <form onSubmit={handleSearchBalanceSubmit} className="flex flex-col gap-4">
-                    <div className="flex gap-2">
-                        <input
-                            type="text"
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                            placeholder="Enter wallet address (0x...)"
-                            className="flex-1 px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50"
-                        />
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="hover:cursor-pointer px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg flex items-center gap-2 transition-colors disabled:bg-slate-400"
-                        >
-                            <SearchIcon fontSize="small" />
-                            {loading ? 'Searching...' : 'Search'}
-                        </button>
-                    </div>
-                    {error && (
-                        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                            <p className="text-red-700 text-sm">{error}</p>
-                        </div>
-                    )}
-                    {balance !== null && (
-                        <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 border border-emerald-200 shadow-lg">
-                            {/* Decorative background elements */}
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-100 rounded-full blur-3xl opacity-30"></div>
-                            <div className="absolute bottom-0 left-0 w-24 h-24 bg-teal-100 rounded-full blur-2xl opacity-40"></div>
-
-                            <div className="relative p-6">
-                                {/* Header */}
-                                <div className="flex items-center gap-3 mb-6">
-                                    <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
-                                        <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                                    </div>
-                                    <div>
-                                        <h3 className="text-lg font-semibold text-slate-800">Wallet Balance</h3>
-                                        <p className="text-sm text-slate-600">Real-time Ethereum holdings</p>
-                                    </div>
-                                </div>
-
-                                {/* Balance Values */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                                    {/* ETH Balance */}
-                                    <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 border border-emerald-100">
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                            <span className="text-sm font-medium text-slate-600">Ethereum</span>
-                                        </div>
-                                        <p className="text-2xl font-bold text-slate-800">{balance.eth} ETH</p>
-                                        <p className="text-xs text-slate-500 mt-1">Native cryptocurrency</p>
-                                    </div>
-
-                                    {/* USD Value */}
-                                    <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 border border-emerald-100">
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                            <span className="text-sm font-medium text-slate-600">USD Value</span>
-                                        </div>
-                                        <p className="text-2xl font-bold text-slate-800">{convertToCurrency(balance.usdValue)}</p>
-                                        <p className="text-xs text-slate-500 mt-1">Current market value</p>
-                                    </div>
-                                </div>
-
-                                {/* Address and additional info */}
-                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4 border-t border-emerald-100">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-xs text-slate-500">Address:</span>
-                                        <code className="text-xs bg-slate-100 px-2 py-1 rounded font-mono text-slate-700">
-                                            {address}
-                                        </code>
-                                    </div>
-                                    <div className="flex items-center gap-4 text-xs text-slate-500">
-                                        <span>Last updated: {new Date().toLocaleTimeString()}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </form>
             </div>
         </main>
     )
