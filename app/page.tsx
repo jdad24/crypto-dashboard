@@ -11,7 +11,7 @@ export default function Home() {
         <TrendingCard title="Trending" />   
         <TopGainersCard title="Top Gainers" />     
       </div>
-      <div className="bg-gradient-to-r from-blue-400 to-blue-200 rounded-lg shadow-lg p-8 my-4">
+      <div className="bg-blue-400 rounded-lg shadow-lg shadow-black/70 p-8 my-4">
         <h2 className="text-2xl font-bold mb-4"><StarIcon className="mr-2 inline fill-yellow-500" />Top 100 Cryptocurrencies</h2>
         <BluechipTable />
       </div>

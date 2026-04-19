@@ -4,12 +4,17 @@ import { useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import ExploreIcon from '@mui/icons-material/Explore';
 import SwapCallsIcon from '@mui/icons-material/SwapCalls';
-import BlockIcon from '@mui/icons-material/Block';
-import AnalyticsIcon from '@mui/icons-material/Analytics';
+import { convertToCurrency } from '../_lib/utils';
+
+interface BalanceResponse {
+    address: string;
+    eth: number;
+    usdValue: number;
+}
 
 export default function Explorer() {
     const [address, setAddress] = useState('');
-    const [balance, setBalance] = useState<string | null>(null);
+    const [balance, setBalance] = useState<BalanceResponse | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -25,12 +30,12 @@ export default function Explorer() {
         setBalance(null);
 
         try {
-            const response = await fetch(`/api/v1/etherscan/balance?address=${encodeURIComponent(address)}`);
+            const response = await fetch(`/api/v1/wallets/balance?address=${encodeURIComponent(address)}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch balance');
             }
             const data = await response.json();
-            setBalance(data.balance || '0');
+            setBalance(data || '--');
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An error occurred');
             setBalance(null);
@@ -44,12 +49,12 @@ export default function Explorer() {
             {/* Header Section with Features */}
             <div className="space-y-6">
                 {/* Main Header */}
-                <div className="relative py-8 px-6 rounded-lg bg-gradient-to-r from-blue-500 to-blue-300 shadow-lg overflow-hidden">
+                <div className="relative py-8 px-6 rounded-lg bg-gradient-to-r from-blue-500 to-blue-300 shadow-lg shadow-black/40 overflow-hidden">
                     {/* Background decorative element */}
                     <div className="absolute inset-0 opacity-10">
                         <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full blur-3xl"></div>
                     </div>
-                    
+
                     <div className="relative z-10 flex items-center gap-4">
                         <div className="p-3 bg-white/20 rounded-lg backdrop-blur">
                             <ExploreIcon sx={{ fontSize: 32, color: 'white' }} />
@@ -63,7 +68,7 @@ export default function Explorer() {
 
                 {/* Features Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="p-5 rounded-lg bg-white border border-slate-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
+                    <div className="p-5 rounded-lg bg-white border border-slate-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 hover:cursor-pointer">
                         <div className="flex items-center gap-3 mb-3">
                             <div className="p-2 bg-blue-100 rounded-lg">
                                 <SwapCallsIcon sx={{ fontSize: 24, color: '#3b82f6' }} />
@@ -72,54 +77,12 @@ export default function Explorer() {
                         </div>
                         <p className="text-sm text-slate-600">Check ETH balance for any wallet address</p>
                     </div>
-
-                    {/* <div className="p-5 rounded-lg bg-white border border-slate-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="p-2 bg-blue-100 rounded-lg">
-                                <SwapCallsIcon sx={{ fontSize: 24, color: '#3b82f6' }} />
-                            </div>
-                            <h3 className="font-semibold text-slate-900">Live Transactions</h3>
-                        </div>
-                        <p className="text-sm text-slate-600">View real-time transaction data across the network</p>
-                    </div> */}
-
-                    {/* <div className="p-5 rounded-lg bg-white border border-slate-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="p-2 bg-blue-100 rounded-lg">
-                                <BlockIcon sx={{ fontSize: 24, color: '#3b82f6' }} />
-                            </div>
-                            <h3 className="font-semibold text-slate-900">Block Details</h3>
-                        </div>
-                        <p className="text-sm text-slate-600">Inspect block information, rewards, and timestamps</p>
-                    </div> */}
-
-                    {/* <div className="p-5 rounded-lg bg-white border border-slate-200 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300">
-                        <div className="flex items-center gap-3 mb-3">
-                            <div className="p-2 bg-blue-100 rounded-lg">
-                                <AnalyticsIcon sx={{ fontSize: 24, color: '#3b82f6' }} />
-                            </div>
-                            <h3 className="font-semibold text-slate-900">Network Stats</h3>
-                        </div>
-                        <p className="text-sm text-slate-600">Monitor blockchain metrics and network health</p>
-                    </div> */}
                 </div>
             </div>
 
-            {/* Main Content Card
-            <div className="rounded-lg shadow-lg p-8 bg-linear-to-br from-blue-50 to-indigo-50 border border-blue-100">
-                <div className="max-w-3xl">
-                    <p className="text-lg leading-relaxed text-slate-700 mb-6">
-                        Explore the blockchain and view transaction details, block information, and other data. Our explorer provides you with a comprehensive view of the cryptocurrency network.
-                    </p>
-                    <p className="text-base leading-relaxed text-slate-600">
-                        Whether you're a seasoned investor or just getting started, our explorer is your go-to source for understanding the blockchain.
-                    </p>
-                </div>
-            </div> */}
-
             {/* Wallet Balance Lookup */}
             <div className="rounded-lg shadow-lg p-8 bg-white border border-slate-200">
-                <h2 className="text-2xl font-bold text-slate-900 mb-6">Check Wallet Balance</h2>
+                <h2 className="text-2xl font-bold text-slate-900 mb-6">Check Wallet Ethereum Balance</h2>
                 <form onSubmit={handleSearchBalanceSubmit} className="flex flex-col gap-4">
                     <div className="flex gap-2">
                         <input
@@ -132,7 +95,7 @@ export default function Explorer() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg flex items-center gap-2 transition-colors disabled:bg-slate-400"
+                            className="hover:cursor-pointer px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg flex items-center gap-2 transition-colors disabled:bg-slate-400"
                         >
                             <SearchIcon fontSize="small" />
                             {loading ? 'Searching...' : 'Search'}
@@ -144,10 +107,59 @@ export default function Explorer() {
                         </div>
                     )}
                     {balance !== null && (
-                        <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                            <p className="text-sm text-slate-600 mb-1">Wallet Balance</p>
-                            <p className="text-2xl font-bold text-green-700">{balance} ETH</p>
-                            <p className="text-xs text-slate-500 mt-2">Address: {address}</p>
+                        <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 border border-emerald-200 shadow-lg">
+                            {/* Decorative background elements */}
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-100 rounded-full blur-3xl opacity-30"></div>
+                            <div className="absolute bottom-0 left-0 w-24 h-24 bg-teal-100 rounded-full blur-2xl opacity-40"></div>
+
+                            <div className="relative p-6">
+                                {/* Header */}
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
+                                        <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-semibold text-slate-800">Wallet Balance</h3>
+                                        <p className="text-sm text-slate-600">Real-time Ethereum holdings</p>
+                                    </div>
+                                </div>
+
+                                {/* Balance Values */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    {/* ETH Balance */}
+                                    <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 border border-emerald-100">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                            <span className="text-sm font-medium text-slate-600">Ethereum</span>
+                                        </div>
+                                        <p className="text-2xl font-bold text-slate-800">{balance.eth} ETH</p>
+                                        <p className="text-xs text-slate-500 mt-1">Native cryptocurrency</p>
+                                    </div>
+
+                                    {/* USD Value */}
+                                    <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 border border-emerald-100">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                            <span className="text-sm font-medium text-slate-600">USD Value</span>
+                                        </div>
+                                        <p className="text-2xl font-bold text-slate-800">{convertToCurrency(balance.usdValue)}</p>
+                                        <p className="text-xs text-slate-500 mt-1">Current market value</p>
+                                    </div>
+                                </div>
+
+                                {/* Address and additional info */}
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4 border-t border-emerald-100">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xs text-slate-500">Address:</span>
+                                        <code className="text-xs bg-slate-100 px-2 py-1 rounded font-mono text-slate-700">
+                                            {address}
+                                        </code>
+                                    </div>
+                                    <div className="flex items-center gap-4 text-xs text-slate-500">
+                                        <span>Last updated: {new Date().toLocaleTimeString()}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     )}
                 </form>
