@@ -97,7 +97,7 @@ export default function CoinProfileContent({ coin }: ProfileContentProps) {
 
                     {/* Chart Section */}
                     <div className="flex-1">
-                        <AreaChart className="w-full" chartData={chartData} />
+                        {chartData ? <AreaChart className="w-full" chartData={chartData} /> : null}
                     </div>
                 </div>
             </div>
