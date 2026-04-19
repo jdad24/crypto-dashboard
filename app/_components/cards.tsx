@@ -201,42 +201,27 @@ export function TrendingCard({ title, className }: CardProps) {
 }
 
 export function CoinDataCard({ marketCap, circulatingSupply, totalSupply, maxSupply, className, ath, high_24h, low_24h }: CoinDataCardProps) {
+    const renderStat = (label: string, value: string) => (
+        <div className="flex flex-col justify-between items-center p-3 bg-white/5 rounded-lg">
+            <span className="text-white/80 font-medium">{label}</span>
+            <span className="text-white font-semibold">{value}</span>
+        </div>
+    )
     return (
         <Card className={`bg-white/10 backdrop-blur-md border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden w-full max-w-2xl ${className}`}>
             <CardContent className="p-6">
                 <h3 className="text-xl font-bold text-white mb-6">Market Statistics</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-4">
-                        <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
-                            <span className="text-white/80 font-medium">Market Cap</span>
-                            <span className="text-white font-semibold">{marketCap}</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
-                            <span className="text-white/80 font-medium">Circulating Supply</span>
-                            <span className="text-white font-semibold">{circulatingSupply}</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
-                            <span className="text-white/80 font-medium">Total Supply</span>
-                            <span className="text-white font-semibold">{totalSupply}</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
-                            <span className="text-white/80 font-medium">Max Supply</span>
-                            <span className="text-white font-semibold">{maxSupply != "0" ? maxSupply : "Infinite"}</span>
-                        </div>
+                        {renderStat("Market Cap", marketCap)}
+                        {renderStat("Circulating Supply", circulatingSupply)}
+                        {renderStat("Total Supply", totalSupply)}
+                        {renderStat("Max Supply", maxSupply != "0" ? maxSupply : "Infinite")}
                     </div>
                     <div className="space-y-4">
-                        <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
-                            <span className="text-white/80 font-medium">All Time High</span>
-                            <span className="text-white font-semibold">{ath}</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
-                            <span className="text-white/80 font-medium">24h High</span>
-                            <span className="text-white font-semibold">{high_24h}</span>
-                        </div>
-                        <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
-                            <span className="text-white/80 font-medium">24h Low</span>
-                            <span className="text-white font-semibold">{low_24h}</span>
-                        </div>
+                        {renderStat("All Time High", ath)}
+                        {renderStat("24h High", high_24h)}
+                        {renderStat("24h Low", low_24h)}
                     </div>
                 </div>
             </CardContent>
