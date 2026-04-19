@@ -64,7 +64,7 @@ export default function CoinProfileContent({ coin }: ProfileContentProps) {
     }, [])
 
     return (
-        <main className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+        <main className="min-h-screen bg-linear-to-br from-slate-900 via-blue-900 to-slate-900">
             <div className="mx-[5%] py-8">
                 <div className="flex md:flex-row flex-col justify-between gap-8">
                     <div className="flex flex-col flex-1">
@@ -75,7 +75,7 @@ export default function CoinProfileContent({ coin }: ProfileContentProps) {
                                     {data['image'] ? <Image src={data['image']} alt={data['name']} width={60} height={60} className="rounded-full" /> : null}
                                     <span>{capitalize(data['name'])}</span>
                                 </div>
-                                <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white font-bold text-lg px-4 py-2 rounded-lg shadow-lg">
+                                <div className="bg-linear-to-r from-blue-600 to-green-600 text-white font-bold text-lg px-4 py-2 rounded-lg shadow-lg">
                                     {data['market_cap_rank'] != 0 ? `#${data['market_cap_rank']}` : "-"}
                                 </div>
                             </div>
