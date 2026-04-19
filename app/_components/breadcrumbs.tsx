@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 export default function CryptoBreadcrumbs({ coin, className }: { coin: string, className?: string }) {
     return (
         <nav aria-label="breadcrumb" className={`${className || ''}`}>
