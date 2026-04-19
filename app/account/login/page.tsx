@@ -1,4 +1,4 @@
-import { TextField, FormControl, Box, Button } from "@mui/material"
+import { TextField, FormControl, Box, Button, Card, CardContent } from "@mui/material"
 import { HeaderCard } from "@/app/_components/cards"
 import { neon } from "@neondatabase/serverless"
 import { redirect } from "next/navigation"
@@ -58,15 +58,71 @@ export default function Login() {
 
     }
     return (
-        <main className="flex flex-col ">
-            <HeaderCard title="Login" className="m-5" />
-            <Box component="form" action={authLogin}>
-                <FormControl className="w-full flex flex-col justify-center items-center gap-5 mt-10">
-                    <TextField required className="w-100" name="email" label="Email" placeholder="Enter email" />
-                    <TextField required className="w-100" name="password" label="Password" placeholder="Enter password" />
-                    <Button type="submit" variant="contained" className="w-100">Login</Button>
-                </FormControl>
-            </Box>
+        <main className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex flex-col justify-center items-center p-4">
+            <div className="w-full max-w-md">
+                <HeaderCard title="Login" className="mb-8" />
+                <Card className="bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl rounded-xl overflow-hidden">
+                    <CardContent className="p-8">
+                        <Box component="form" action={authLogin} className="space-y-6">
+                            <FormControl className="w-full space-y-4">
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="email"
+                                    label="Email"
+                                    placeholder="Enter your email"
+                                    variant="outlined"
+                                    className="bg-white/5"
+                                    InputLabelProps={{
+                                        className: "text-white"
+                                    }}
+                                    InputProps={{
+                                        className: "text-white border-white/30",
+                                        classes: {
+                                            notchedOutline: "border-white/30"
+                                        }
+                                    }}
+                                />
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    placeholder="Enter your password"
+                                    variant="outlined"
+                                    className="bg-white/5"
+                                    InputLabelProps={{
+                                        className: "text-white"
+                                    }}
+                                    InputProps={{
+                                        className: "text-white border-white/30",
+                                        classes: {
+                                            notchedOutline: "border-white/30"
+                                        }
+                                    }}
+                                />
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    fullWidth
+                                    className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl"
+                                >
+                                    Login
+                                </Button>
+                            </FormControl>
+                        </Box>
+                        <div className="mt-6 text-center">
+                            <p className="text-white/70 text-sm">
+                                Don't have an account?{' '}
+                                <a href="/account/signup" className="text-blue-400 hover:text-blue-300 font-semibold transition-colors">
+                                    Sign up here
+                                </a>
+                            </p>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
         </main>
     )
 }

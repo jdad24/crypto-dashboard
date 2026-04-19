@@ -12,15 +12,12 @@ export async function GET(request: NextRequest) {
         const response = await fetch(url, options)
 
         if (response.ok) {
-            const { data } = await response.json()            
-            const totalMarketcap = data?.['total_market_cap']?.['usd']
-
-            if (totalMarketcap) {
-                return NextResponse.json(totalMarketcap)
-            }
+            const { data } = await response.json()                      
+            const totalMarketcap = Number(data?.['total_market_cap']?.['usd']) || 0
+            return NextResponse.json(totalMarketcap)
         }
 
-        // throw new Error("Total market cap fetch failure")
+        throw new Error(response.statusText || "Failed to fetch market cap data")
     } catch (e) {
         console.error(e)
         return NextResponse.json(String(e))

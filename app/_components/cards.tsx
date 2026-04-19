@@ -22,10 +22,18 @@ export function HeaderCard({ title, className }: { title: string, className?: st
 export function BalanceCard({ title, value, className }: CardProps) {
 
     return (
-        <Card className={`bg-gray-100 flex flex-col justify-center w-100 h-30 pl-4 ${className}`}>
-            <CardContent>
-                <div className="font-bold text-2xl p-2">{value}</div>
-                <div className="font-bold text-gray-600 text-lg p-2">{title}</div>
+        <Card className={`bg-white/10 backdrop-blur-md border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden w-full max-w-md ${className}`}>
+            <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-green-500/20 rounded-lg">
+                        <div className="w-4 h-4 bg-green-500 rounded-full"></div>
+                    </div>
+                    <div>
+                        <div className="font-semibold text-white/80 text-sm">{title}</div>
+                        <div className="text-xs text-white/60">Current portfolio value</div>
+                    </div>
+                </div>
+                <div className="text-3xl font-bold text-white">{value}</div>
             </CardContent>
         </Card>
     )
@@ -38,7 +46,13 @@ export function MarketcapCard({ className }: CardProps) {
         const fetchMarketCap = async () => {
             try {
                 const response = await fetch(`/api/v1/marketcap`, { cache: "no-store" })
-                setMarketCap(convertToCurrency(await response.json(), 0))
+                const jsonResponse = await response.json()
+                console.log(jsonResponse)
+                if (typeof jsonResponse === "number") {
+                    setMarketCap(convertToCurrency(jsonResponse, 0))
+                } else {
+                    setMarketCap("-")
+                }
             } catch (e) {
                 setMarketCap("-")
             }
@@ -46,7 +60,7 @@ export function MarketcapCard({ className }: CardProps) {
 
         fetchMarketCap()
         setInterval(fetchMarketCap, 60000) // Refresh data every 60 seconds
-    })
+    }, [])
 
     return (
         <Card className={`bg-white/10 backdrop-blur-md border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden w-full max-w-sm ${className}`}>
@@ -74,7 +88,7 @@ export function TopGainersCard({ title, className }: CardProps) {
             try {
                 const response = await fetch(`/api/v1/coins`, { cache: "no-store" })
                 const data = await response.json()
-                if (data.length > 0) {                    
+                if (data.length > 0) {
                     const sortedGainers = data.sort((a: any, b: any) => b.price_change_percentage_24h - a.price_change_percentage_24h)
                     const topGainers = sortedGainers.slice(0, 3)
                     setGainers(topGainers)
@@ -188,37 +202,42 @@ export function TrendingCard({ title, className }: CardProps) {
 
 export function CoinDataCard({ marketCap, circulatingSupply, totalSupply, maxSupply, className, ath, high_24h, low_24h }: CoinDataCardProps) {
     return (
-        <Card className={`${className}flex flex-col justify-evenly bg-gray-100 w-100 h-70 p-3 font-bold`}>
-            <CardContent>
-                <div className="flex flex-row justify-between border-b border-gray-400">
-                    <div className="w-40">Market Cap</div>
-                    <div>{marketCap}</div>
-                </div>
-                <div className="flex flex-row justify-between border-b border-gray-400">
-                    <div className="w-40">Circulating Supply</div>
-                    <div>{circulatingSupply}</div>
-                </div>
-                <div className="flex flex-row justify-between border-b border-gray-400">
-                    <div className="w-40">Total Supply</div>
-                    <div>{totalSupply}</div>
-                </div>
-                <div className="flex flex-row justify-between border-b border-gray-400">
-                    <div className="w-40">Max Supply</div>
-                    <div>{maxSupply != "0" ? maxSupply : "Infinite"}</div>
-                </div>
-            </CardContent>
-            <CardContent>
-                <div className="flex flex-row justify-between border-b border-gray-400">
-                    <div className="w-40">All Time High</div>
-                    <div>{ath}</div>
-                </div>
-                <div className="flex flex-row justify-between border-b border-gray-400">
-                    <div className="w-40">24 Hour High</div>
-                    <div>{high_24h}</div>
-                </div>
-                <div className="flex flex-row justify-between border-b border-gray-400">
-                    <div className="w-40">24 Hour Low</div>
-                    <div>{low_24h}</div>
+        <Card className={`bg-white/10 backdrop-blur-md border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden w-full max-w-2xl ${className}`}>
+            <CardContent className="p-6">
+                <h3 className="text-xl font-bold text-white mb-6">Market Statistics</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+                            <span className="text-white/80 font-medium">Market Cap</span>
+                            <span className="text-white font-semibold">{marketCap}</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+                            <span className="text-white/80 font-medium">Circulating Supply</span>
+                            <span className="text-white font-semibold">{circulatingSupply}</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+                            <span className="text-white/80 font-medium">Total Supply</span>
+                            <span className="text-white font-semibold">{totalSupply}</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+                            <span className="text-white/80 font-medium">Max Supply</span>
+                            <span className="text-white font-semibold">{maxSupply != "0" ? maxSupply : "Infinite"}</span>
+                        </div>
+                    </div>
+                    <div className="space-y-4">
+                        <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+                            <span className="text-white/80 font-medium">All Time High</span>
+                            <span className="text-white font-semibold">{ath}</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+                            <span className="text-white/80 font-medium">24h High</span>
+                            <span className="text-white font-semibold">{high_24h}</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+                            <span className="text-white/80 font-medium">24h Low</span>
+                            <span className="text-white font-semibold">{low_24h}</span>
+                        </div>
+                    </div>
                 </div>
             </CardContent>
         </Card>

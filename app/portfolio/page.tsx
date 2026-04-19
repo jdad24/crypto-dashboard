@@ -34,16 +34,36 @@ export default async function Portfolio() {
     }, 0), 2);
 
     return (
-        <div className="h-screen mx-[5%] flex flex-col">
-            <div className="flex flex-row justify-end my-2 space-x-2">
-                <TransactionButton />
-                <DownloadButton transactions={transactions} />
+        <main className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+            <div className="mx-[5%] py-8">
+                {/* Header Section */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                    <div>
+                        <h1 className="text-4xl font-bold text-white mb-2">Portfolio</h1>
+                        <p className="text-white/70">Track your cryptocurrency investments</p>
+                    </div>
+                    <div className="flex gap-3">
+                        <TransactionButton />
+                        <DownloadButton transactions={transactions} />
+                    </div>
+                </div>
+
+                {/* Portfolio Value Card */}
+                <div className="mb-8">
+                    <BalanceCard title="Portfolio Value" value={currentPortfolioValue} />
+                </div>
+
+                {/* Holdings Table */}
+                <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-2xl overflow-hidden">
+                    <div className="p-8 border-b border-white/10">
+                        <h2 className="text-2xl font-bold text-white mb-2">Your Holdings</h2>
+                        <p className="text-white/60">Detailed view of your cryptocurrency portfolio</p>
+                    </div>
+                    <div className="p-8">
+                        <PortfolioTable className="mt-0" coinData={coinData} transactions={transactions} />
+                    </div>
+                </div>
             </div>
-            <BalanceCard title="Portfolio Value" value={currentPortfolioValue} />
-            <div className="rounded-lg shadow-black shadow-lg p-8 my-4 bg-blue-400/80">
-                <h2 className="text-2xl font-bold mb-4">Your Holdings</h2>
-                <PortfolioTable className="mt-10" coinData={coinData} transactions={transactions} />
-            </div>
-        </div>
+        </main>
     )
 }

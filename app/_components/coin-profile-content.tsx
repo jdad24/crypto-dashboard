@@ -64,29 +64,43 @@ export default function CoinProfileContent({ coin }: ProfileContentProps) {
     }, [])
 
     return (
-        <div className="mx-[5%] my-10 flex md:flex-row flex-col justify-between">
-            <div className="flex flex-col">
-                <div className="mb-10">
-                    <h1 className="flex flex-row justify-between items-center">
-                        <div className="flex flex-row items-center text-3xl font-bold mb-1 gap-2" >
-                            {data['image'] ? <Image src={data['image']} alt={data['name']} width={50} height={50} /> : null}
-                            {capitalize(data['name'])}
+        <main className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+            <div className="mx-[5%] py-8">
+                <div className="flex md:flex-row flex-col justify-between gap-8">
+                    <div className="flex flex-col flex-1">
+                        {/* Header Section */}
+                        <div className="mb-8">
+                            <div className="flex flex-row justify-between items-center mb-4">
+                                <div className="flex flex-row items-center text-4xl font-bold gap-4 text-white">
+                                    {data['image'] ? <Image src={data['image']} alt={data['name']} width={60} height={60} className="rounded-full" /> : null}
+                                    <span>{capitalize(data['name'])}</span>
+                                </div>
+                                <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white font-bold text-lg px-4 py-2 rounded-lg shadow-lg">
+                                    {data['market_cap_rank'] != 0 ? `#${data['market_cap_rank']}` : "-"}
+                                </div>
+                            </div>
+                            <div className="text-6xl font-bold text-white mt-4">{convertToCurrency(data['current_price'])}</div>
+                            <div className="text-white/60 mt-2">Current Price</div>
                         </div>
-                        <div className="bg-gray-400 text-white font-bold text-lg p-2 rounded-md">{data['market_cap_rank'] != 0 ? `#${data['market_cap_rank']}` : "-"}</div>
-                    </h1>
-                    <div className="text-5xl mt-2">{convertToCurrency(data['current_price'])} </div>
+
+                        {/* Market Statistics Card */}
+                        <CoinDataCard
+                            marketCap={convertToCurrency(data['market_cap'], 0)}
+                            circulatingSupply={Number(data['circulating_supply']).toLocaleString()}
+                            totalSupply={Number(data['total_supply']).toLocaleString()}
+                            maxSupply={Number(data['max_supply']).toLocaleString() ?? "Undefined"}
+                            ath={convertToCurrency(data['ath'], 2)}
+                            high_24h={convertToCurrency(data['high_24h'], 2)}
+                            low_24h={convertToCurrency(data['low_24h'], 2)}
+                        />
+                    </div>
+
+                    {/* Chart Section */}
+                    <div className="flex-1">
+                        <AreaChart className="w-full" chartData={chartData} />
+                    </div>
                 </div>
-                <CoinDataCard
-                    marketCap={convertToCurrency(data['market_cap'], 0)}
-                    circulatingSupply={Number(data['circulating_supply']).toLocaleString()}
-                    totalSupply={Number(data['total_supply']).toLocaleString()}
-                    maxSupply={Number(data['max_supply']).toLocaleString() ?? "Undefined"}
-                    ath={convertToCurrency(data['ath'], 2)}
-                    high_24h={convertToCurrency(data['high_24h'], 2)}
-                    low_24h={convertToCurrency(data['low_24h'], 2)}
-                />
             </div>
-            <AreaChart className="md:w-auto" chartData={chartData} />
-        </div>
+        </main>
     )
 }
