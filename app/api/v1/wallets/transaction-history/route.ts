@@ -34,6 +34,9 @@ export async function GET(response: NextRequest) {
         );
 
         const data = await res.json();
+        return new Response(JSON.stringify(data), {
+            headers: { "Content-Type": "application/json" },
+        });
     } catch (error) {
         console.error("Error fetching transaction history:", error);
         return new Response(
