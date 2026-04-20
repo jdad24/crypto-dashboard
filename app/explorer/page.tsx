@@ -20,6 +20,9 @@ interface AssetTransfer {
     value: string;
     category: string;
     blockNum: string;
+    metadata?: {
+        blockTimestamp?: string;
+    };
     rawContract?: {
         address?: string;
     };
@@ -41,6 +44,15 @@ export default function Explorer() {
     };
 
     const truncateHash = (hash: string) => truncateAddress(hash, 10, 10);
+
+    const formatTimestamp = (timestamp?: string) => {
+        if (!timestamp) return 'Unknown';
+        try {
+            return new Date(timestamp).toLocaleString();
+        } catch {
+            return timestamp;
+        }
+    };
 
     const handleCopyToClipboard = async (value: string) => {
         try {
@@ -213,7 +225,7 @@ export default function Explorer() {
                                     <button
                                         type="button"
                                         onClick={handlePasteFromClipboard}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 px-4 py-2 text-sm text-white/80 hover:bg-white/15 transition"
+                                        className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 px-4 py-2 text-sm text-white/80 hover:bg-white/15 transition"
                                     >
                                         Paste
                                     </button>
@@ -292,7 +304,7 @@ export default function Explorer() {
                                                     <button
                                                         type="button"
                                                         onClick={() => handleCopyToClipboard(address)}
-                                                        className="rounded-full bg-white/10 px-4 py-2 text-sm text-white/80 hover:bg-white/15 transition"
+                                                        className="cursor-pointer rounded-full bg-white/10 px-4 py-2 text-sm text-white/80 hover:bg-white/15 transition"
                                                     >
                                                         Copy
                                                     </button>
@@ -331,6 +343,7 @@ export default function Explorer() {
                                                             <th className="text-left py-4 px-6 font-semibold text-white/80">Value</th>
                                                             <th className="text-left py-4 px-6 font-semibold text-white/80">From</th>
                                                             <th className="text-left py-4 px-6 font-semibold text-white/80">To</th>
+                                                            <th className="text-left py-4 px-6 font-semibold text-white/80">Time</th>
                                                             <th className="text-left py-4 px-6 font-semibold text-white/80">Txn Hash</th>
                                                         </tr>
                                                     </thead>
@@ -349,7 +362,7 @@ export default function Explorer() {
                                                                             <button
                                                                                 type="button"
                                                                                 onClick={() => handleCopyToClipboard(tx.from)}
-                                                                                className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/80 hover:bg-white/15 transition"
+                                                                                className="cursor-pointer rounded-full bg-white/10 px-3 py-1 text-xs text-white/80 hover:bg-white/15 transition"
                                                                             >
                                                                                 Copy
                                                                             </button>
@@ -361,19 +374,20 @@ export default function Explorer() {
                                                                             <button
                                                                                 type="button"
                                                                                 onClick={() => handleCopyToClipboard(tx.to)}
-                                                                                className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/80 hover:bg-white/15 transition"
+                                                                                className="cursor-pointer rounded-full bg-white/10 px-3 py-1 text-xs text-white/80 hover:bg-white/15 transition"
                                                                             >
                                                                                 Copy
                                                                             </button>
                                                                         </div>
                                                                     </td>
+                                                                    <td className="py-4 px-6 text-white/70">{formatTimestamp(tx.metadata?.blockTimestamp)}</td>
                                                                     <td className="py-4 px-6 text-white/70 font-mono text-sm">
                                                                         <div className="flex items-center gap-2 flex-wrap">
                                                                             <span>{truncateHash(tx.hash)}</span>
                                                                             <button
                                                                                 type="button"
                                                                                 onClick={() => handleCopyToClipboard(tx.hash)}
-                                                                                className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/80 hover:bg-white/15 transition"
+                                                                                className="cursor-pointer rounded-full bg-white/10 px-3 py-1 text-xs text-white/80 hover:bg-white/15 transition"
                                                                             >
                                                                                 Copy
                                                                             </button>
