@@ -12,11 +12,34 @@ interface BalanceResponse {
     usdValue: number;
 }
 
+interface AssetTransfer {
+    hash: string;
+    from: string;
+    to: string;
+    asset: string;
+    value: string;
+    category: string;
+    blockNum: string;
+    rawContract?: {
+        address?: string;
+    };
+}
+
 export default function Explorer() {
     const [address, setAddress] = useState('');
     const [balance, setBalance] = useState<BalanceResponse | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [transactions, setTransactions] = useState<AssetTransfer[] | null>(null);
+    const [transactionLoading, setTransactionLoading] = useState(false);
+    const [transactionError, setTransactionError] = useState<string | null>(null);
+
+    const truncateAddress = (text: string, front = 6, back = 4) => {
+        if (!text) return '';
+        return `${text.slice(0, front)}...${text.slice(-back)}`;
+    };
+
+    const truncateHash = (hash: string) => truncateAddress(hash, 10, 10);
 
     const handleSearchBalanceSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -28,6 +51,10 @@ export default function Explorer() {
         setLoading(true);
         setError(null);
         setBalance(null);
+        setTransactions(null);
+        setTransactionError(null);
+
+        let shouldFetchTx = true;
 
         try {
             const response = await fetch(`/api/v1/wallets/balance?address=${encodeURIComponent(address)}`);
@@ -35,18 +62,42 @@ export default function Explorer() {
                 throw new Error('Failed to fetch balance');
             }
             const data = await response.json();
-            setBalance(data || '--');
+            setBalance(data || null);
+            if (!data) {
+                shouldFetchTx = false;
+            }
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An error occurred');
             setBalance(null);
+            shouldFetchTx = false;
         } finally {
             setLoading(false);
+        }
+
+        if (!shouldFetchTx) {
+            return;
+        }
+
+        setTransactionLoading(true);
+        try {
+            const txResponse = await fetch(`/api/v1/wallets/transaction-history?address=${encodeURIComponent(address)}`);
+            if (!txResponse.ok) {
+                throw new Error('Failed to fetch transaction history');
+            }
+            const txData = await txResponse.json();
+            const transfers: AssetTransfer[] = txData?.result?.transfers ?? txData?.transfers ?? [];
+            setTransactions(transfers.slice(0, 12));
+        } catch (err) {
+            setTransactionError(err instanceof Error ? err.message : 'Unable to load transaction history');
+            setTransactions([]);
+        } finally {
+            setTransactionLoading(false);
         }
     };
 
     const renderMainHeader = () => {
         return (
-            <div className="relative py-8 px-8 rounded-xl bg-gradient-to-r from-blue-600 to-green-600 shadow-2xl overflow-hidden">
+            <div className="relative py-8 px-8 rounded-xl bg-linear-to-r from-blue-600 to-green-600 shadow-2xl overflow-hidden">
                 {/* Background decorative elements */}
                 <div className="absolute inset-0 opacity-20">
                     <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full blur-3xl"></div>
@@ -104,7 +155,7 @@ export default function Explorer() {
     }
 
     return (
-        <main className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+        <main className="min-h-screen bg-linear-to-br from-slate-900 via-blue-900 to-slate-900">
             <div className="mx-[5%] py-8 pb-12">
                 {/* Header Section with Features */}
                 <div className="space-y-8">
@@ -134,7 +185,7 @@ export default function Explorer() {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold rounded-xl flex items-center gap-3 transition-all duration-300 shadow-lg hover:shadow-xl hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="px-8 py-4 bg-linear-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold rounded-xl flex items-center gap-3 transition-all duration-300 shadow-lg hover:shadow-xl hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <SearchIcon fontSize="medium" />
                                     {loading ? 'Searching...' : 'Search'}
@@ -148,8 +199,9 @@ export default function Explorer() {
                             )}
 
                             {balance !== null && (
-                                <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-500/10 via-green-500/10 to-teal-500/10 border border-emerald-500/20 shadow-2xl backdrop-blur-md">
-                                    {/* Decorative background elements */}
+                                <>
+                                    <div className="relative overflow-hidden rounded-xl bg-linear-to-br from-emerald-500/10 via-green-500/10 to-teal-500/10 border border-emerald-500/20 shadow-2xl backdrop-blur-md">
+                                        {/* Decorative background elements */}
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-400/20 rounded-full blur-3xl"></div>
                                     <div className="absolute bottom-0 left-0 w-24 h-24 bg-teal-400/20 rounded-full blur-2xl"></div>
 
@@ -202,6 +254,62 @@ export default function Explorer() {
                                         </div>
                                     </div>
                                 </div>
+
+                                <div className="mt-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-2xl overflow-hidden">
+                                    <div className="p-8 border-b border-white/10">
+                                        <h2 className="text-2xl font-bold text-white mb-2">Transaction History</h2>
+                                        <p className="text-white/60">Recent on-chain transfers for this wallet address</p>
+                                    </div>
+                                    <div className="p-8">
+                                        {transactionLoading ? (
+                                            <div className="space-y-4">
+                                                {[...Array(4)].map((_, idx) => (
+                                                    <div key={idx} className="h-16 bg-white/5 rounded-xl animate-pulse" />
+                                                ))}
+                                            </div>
+                                        ) : transactionError ? (
+                                            <div className="p-6 bg-red-500/10 border border-red-500/20 rounded-xl">
+                                                <p className="text-red-200 font-medium">{transactionError}</p>
+                                            </div>
+                                        ) : transactions && transactions.length > 0 ? (
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full min-w-175 border-separate border-spacing-y-3">
+                                                    <thead>
+                                                        <tr>
+                                                            <th className="text-left py-4 px-6 font-semibold text-white/80">Type</th>
+                                                            <th className="text-left py-4 px-6 font-semibold text-white/80">Asset</th>
+                                                            <th className="text-left py-4 px-6 font-semibold text-white/80">Value</th>
+                                                            <th className="text-left py-4 px-6 font-semibold text-white/80">From</th>
+                                                            <th className="text-left py-4 px-6 font-semibold text-white/80">To</th>
+                                                            <th className="text-left py-4 px-6 font-semibold text-white/80">Txn Hash</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {transactions.map((tx) => {
+                                                            const isInbound = tx.to.toLowerCase() === address.toLowerCase();
+                                                            const transferType = isInbound ? 'Receive' : 'Send';
+                                                            return (
+                                                                <tr key={tx.hash} className="bg-white/5 rounded-2xl hover:bg-white/10 transition-colors duration-200">
+                                                                    <td className="py-4 px-6 text-white/80">{transferType}</td>
+                                                                    <td className="py-4 px-6 text-white font-semibold">{tx.asset || 'ETH'}</td>
+                                                                    <td className="py-4 px-6 text-white/80 wrap-break-word">{tx.value}</td>
+                                                                    <td className="py-4 px-6 text-white/70">{truncateAddress(tx.from)}</td>
+                                                                    <td className="py-4 px-6 text-white/70">{truncateAddress(tx.to)}</td>
+                                                                    <td className="py-4 px-6 text-white/70 font-mono text-sm">{truncateHash(tx.hash)}</td>
+                                                                </tr>
+                                                            );
+                                                        })}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        ) : (
+                                            <div className="p-6 bg-white/5 rounded-xl text-white/70">
+                                                No transaction history found for this wallet yet.
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                </>
                             )}
                         </form>
                     </div>
