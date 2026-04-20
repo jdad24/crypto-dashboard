@@ -33,6 +33,7 @@ export default function Explorer() {
     const [transactions, setTransactions] = useState<AssetTransfer[] | null>(null);
     const [transactionLoading, setTransactionLoading] = useState(false);
     const [transactionError, setTransactionError] = useState<string | null>(null);
+    const [clipboardMessage, setClipboardMessage] = useState<string | null>(null);
 
     const truncateAddress = (text: string, front = 6, back = 4) => {
         if (!text) return '';
@@ -40,6 +41,32 @@ export default function Explorer() {
     };
 
     const truncateHash = (hash: string) => truncateAddress(hash, 10, 10);
+
+    const handleCopyToClipboard = async (value: string) => {
+        try {
+            await navigator.clipboard.writeText(value);
+            setClipboardMessage('Copied to clipboard');
+            window.setTimeout(() => setClipboardMessage(null), 2200);
+        } catch (err) {
+            setClipboardMessage('Unable to copy');
+            window.setTimeout(() => setClipboardMessage(null), 2200);
+        }
+    };
+
+    const handlePasteFromClipboard = async () => {
+        try {
+            const text = await navigator.clipboard.readText();
+            if (!text) {
+                throw new Error('Clipboard is empty');
+            }
+            setAddress(text.trim());
+            setClipboardMessage('Pasted address');
+            window.setTimeout(() => setClipboardMessage(null), 2200);
+        } catch (err) {
+            setClipboardMessage(err instanceof Error ? err.message : 'Unable to paste');
+            window.setTimeout(() => setClipboardMessage(null), 2200);
+        }
+    };
 
     const handleSearchBalanceSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -174,14 +201,23 @@ export default function Explorer() {
                     </div>
                     <div className="p-8">
                         <form onSubmit={handleSearchBalanceSubmit} className="space-y-6">
-                            <div className="flex gap-4">
-                                <input
-                                    type="text"
-                                    value={address}
-                                    onChange={(e) => setAddress(e.target.value)}
-                                    placeholder="Enter wallet address (0x...)"
-                                    className="flex-1 px-6 py-4 rounded-xl border border-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/5 text-white placeholder-white/50 text-lg backdrop-blur-sm"
-                                />
+                            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                                <div className="relative flex-1">
+                                    <input
+                                        type="text"
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                        placeholder="Enter wallet address (0x...)"
+                                        className="w-full px-6 py-4 rounded-xl border border-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white/5 text-white placeholder-white/50 text-lg backdrop-blur-sm"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={handlePasteFromClipboard}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 px-4 py-2 text-sm text-white/80 hover:bg-white/15 transition"
+                                    >
+                                        Paste
+                                    </button>
+                                </div>
                                 <button
                                     type="submit"
                                     disabled={loading}
@@ -195,6 +231,11 @@ export default function Explorer() {
                             {error && (
                                 <div className="p-6 bg-red-500/20 border border-red-500/30 rounded-xl backdrop-blur-sm">
                                     <p className="text-red-300 text-lg font-medium">{error}</p>
+                                </div>
+                            )}
+                            {clipboardMessage && (
+                                <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-200 text-sm">
+                                    {clipboardMessage}
                                 </div>
                             )}
 
@@ -242,11 +283,20 @@ export default function Explorer() {
 
                                         {/* Address and additional info */}
                                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pt-6 border-t border-white/20">
-                                            <div className="flex items-center gap-3">
+                                            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                                                 <span className="text-white/60 text-lg">Address:</span>
-                                                <code className="text-lg bg-white/10 px-4 py-2 rounded-lg font-mono text-white border border-white/20">
-                                                    {address}
-                                                </code>
+                                                <div className="flex gap-3 items-center flex-wrap">
+                                                    <code className="text-lg bg-white/10 px-4 py-2 rounded-lg font-mono text-white border border-white/20">
+                                                        {address}
+                                                    </code>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleCopyToClipboard(address)}
+                                                        className="rounded-full bg-white/10 px-4 py-2 text-sm text-white/80 hover:bg-white/15 transition"
+                                                    >
+                                                        Copy
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div className="flex items-center gap-4 text-white/60 text-lg">
                                                 <span>Last updated: {new Date().toLocaleTimeString()}</span>
@@ -293,9 +343,42 @@ export default function Explorer() {
                                                                     <td className="py-4 px-6 text-white/80">{transferType}</td>
                                                                     <td className="py-4 px-6 text-white font-semibold">{tx.asset || 'ETH'}</td>
                                                                     <td className="py-4 px-6 text-white/80 wrap-break-word">{tx.value}</td>
-                                                                    <td className="py-4 px-6 text-white/70">{truncateAddress(tx.from)}</td>
-                                                                    <td className="py-4 px-6 text-white/70">{truncateAddress(tx.to)}</td>
-                                                                    <td className="py-4 px-6 text-white/70 font-mono text-sm">{truncateHash(tx.hash)}</td>
+                                                                    <td className="py-4 px-6 text-white/70">
+                                                                        <div className="flex items-center gap-2 flex-wrap">
+                                                                            <span>{truncateAddress(tx.from)}</span>
+                                                                            <button
+                                                                                type="button"
+                                                                                onClick={() => handleCopyToClipboard(tx.from)}
+                                                                                className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/80 hover:bg-white/15 transition"
+                                                                            >
+                                                                                Copy
+                                                                            </button>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td className="py-4 px-6 text-white/70">
+                                                                        <div className="flex items-center gap-2 flex-wrap">
+                                                                            <span>{truncateAddress(tx.to)}</span>
+                                                                            <button
+                                                                                type="button"
+                                                                                onClick={() => handleCopyToClipboard(tx.to)}
+                                                                                className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/80 hover:bg-white/15 transition"
+                                                                            >
+                                                                                Copy
+                                                                            </button>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td className="py-4 px-6 text-white/70 font-mono text-sm">
+                                                                        <div className="flex items-center gap-2 flex-wrap">
+                                                                            <span>{truncateHash(tx.hash)}</span>
+                                                                            <button
+                                                                                type="button"
+                                                                                onClick={() => handleCopyToClipboard(tx.hash)}
+                                                                                className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/80 hover:bg-white/15 transition"
+                                                                            >
+                                                                                Copy
+                                                                            </button>
+                                                                        </div>
+                                                                    </td>
                                                                 </tr>
                                                             );
                                                         })}
