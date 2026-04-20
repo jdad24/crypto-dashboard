@@ -44,70 +44,77 @@ export default function Explorer() {
         }
     };
 
+    const renderMainHeader = () => {
+        return (
+            <div className="relative py-8 px-8 rounded-xl bg-gradient-to-r from-blue-600 to-green-600 shadow-2xl overflow-hidden">
+                {/* Background decorative elements */}
+                <div className="absolute inset-0 opacity-20">
+                    <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-white rounded-full blur-2xl"></div>
+                </div>
+
+                <div className="relative z-10 flex items-center gap-6">
+                    <div className="p-4 bg-white/20 rounded-xl backdrop-blur-md">
+                        <ExploreIcon sx={{ fontSize: 40, color: 'white' }} />
+                    </div>
+                    <div className="flex flex-col">
+                        <h1 className="text-4xl font-bold text-white mb-2">Ethereum Blockchain Explorer</h1>
+                        <p className="text-blue-100 text-lg">Real-time blockchain data, transactions & analytics</p>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    const renderFeaturesCards = () => {
+        const features = [
+            {
+                icon: <SwapCallsIcon sx={{ fontSize: 30, color: '#34d399' }} />,
+                title: 'Wallet Balance',
+                description: 'Check ETH balance for any wallet address',
+                iconBG: 'bg-green-500/20'
+            },
+            {
+                icon: <ExploreIcon sx={{ fontSize: 30, color: '#60a5fa' }} />,
+                title: 'Transaction History',
+                description: 'View detailed transaction records',
+                iconBG: 'bg-blue-500/20'
+            },
+            {
+                icon: <SearchIcon sx={{ fontSize: 30, color: '#a78bfa' }} />,
+                title: 'Block Explorer',
+                description: 'Explore blocks and network activity',
+                iconBG: 'bg-purple-500/20'
+            }
+        ];
+
+        return features.map((feature, index) => (
+            <div key={index} className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl overflow-hidden p-6">
+                <div className="flex items-center gap-3 mb-4">
+                    <div className={`p-2 ${feature.iconBG} rounded-lg`}>
+                        {feature.icon}
+                    </div>
+                    <div className='flex flex-col'>
+                        <div className="text-white font-semibold text-xl">{feature.title}</div>
+                        <div className="text-white/70">{feature.description}</div>
+                    </div>
+                </div>
+            </div>
+        ))
+    }
+
     return (
         <main className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
             <div className="mx-[5%] py-8 pb-12">
                 {/* Header Section with Features */}
                 <div className="space-y-8">
                     {/* Main Header */}
-                    <div className="relative py-8 px-8 rounded-xl bg-gradient-to-r from-blue-600 to-green-600 shadow-2xl overflow-hidden">
-                        {/* Background decorative elements */}
-                        <div className="absolute inset-0 opacity-20">
-                            <div className="absolute top-0 right-0 w-40 h-40 bg-white rounded-full blur-3xl"></div>
-                            <div className="absolute bottom-0 left-0 w-32 h-32 bg-white rounded-full blur-2xl"></div>
-                        </div>
-
-                        <div className="relative z-10 flex items-center gap-6">
-                            <div className="p-4 bg-white/20 rounded-xl backdrop-blur-md">
-                                <ExploreIcon sx={{ fontSize: 40, color: 'white' }} />
-                            </div>
-                            <div className="flex flex-col">
-                                <h1 className="text-4xl font-bold text-white mb-2">Ethereum Blockchain Explorer</h1>
-                                <p className="text-blue-100 text-lg">Real-time blockchain data, transactions & analytics</p>
-                            </div>
-                        </div>
-                    </div>
-
+                    {renderMainHeader()}
                     {/* Features Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 p-6 hover:scale-105 cursor-pointer">
-                            <div className="flex items-center gap-4 mb-4">
-                                <div className="p-3 bg-blue-500/20 rounded-lg">
-                                    <SwapCallsIcon sx={{ fontSize: 28, color: '#60a5fa' }} />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-semibold text-white">Wallet Balance</h3>
-                                    <p className="text-white/70">Check ETH balance for any wallet address</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 p-6 hover:scale-105 cursor-pointer">
-                            <div className="flex items-center gap-4 mb-4">
-                                <div className="p-3 bg-green-500/20 rounded-lg">
-                                    <ExploreIcon sx={{ fontSize: 28, color: '#34d399' }} />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-semibold text-white">Transaction History</h3>
-                                    <p className="text-white/70">View detailed transaction records</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 p-6 hover:scale-105 cursor-pointer">
-                            <div className="flex items-center gap-4 mb-4">
-                                <div className="p-3 bg-purple-500/20 rounded-lg">
-                                    <SearchIcon sx={{ fontSize: 28, color: '#a78bfa' }} />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-semibold text-white">Block Explorer</h3>
-                                    <p className="text-white/70">Explore blocks and network activity</p>
-                                </div>
-                            </div>
-                        </div>
+                        {renderFeaturesCards()}
                     </div>
                 </div>
-
                 {/* Wallet Balance Lookup */}
                 <div className="mt-12 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-2xl overflow-hidden">
                     <div className="p-8 border-b border-white/10">
@@ -127,7 +134,7 @@ export default function Explorer() {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold rounded-xl flex items-center gap-3 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="px-8 py-4 bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white font-semibold rounded-xl flex items-center gap-3 transition-all duration-300 shadow-lg hover:shadow-xl hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <SearchIcon fontSize="medium" />
                                     {loading ? 'Searching...' : 'Search'}

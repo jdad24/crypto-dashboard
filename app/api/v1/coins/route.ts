@@ -1,3 +1,4 @@
+import next from "next";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -5,7 +6,8 @@ export async function GET(request: NextRequest) {
     const options = {
         headers: {
             'x-cg-demo-api-key': `${process.env.CG_API_KEY}`
-        }
+        },
+        next: { revalidate: 60 }
     }
     const coinId = request.nextUrl.searchParams.get("id")
 

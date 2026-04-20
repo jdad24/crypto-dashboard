@@ -1,3 +1,4 @@
+import next from "next";
 import { NextRequest, NextResponse } from "next/server";
 
 interface ResponseType {
@@ -13,7 +14,10 @@ export async function GET(request: NextRequest) {
         if (!coin) throw Error("Invalid token value")
 
         const url = `https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=usd&interval=daily&days=365`
-        const options = { headers: { 'x-cg-demo-api-key': `${process.env.CG_API_KEY}` } }
+        const options = { headers: 
+            { 'x-cg-demo-api-key': `${process.env.CG_API_KEY}` },
+            next: { revalidate: 60 }
+    }
 
         const response = await fetch(url, options)
         const data = await response.json()  

@@ -45,7 +45,7 @@ export function MarketcapCard({ className }: CardProps) {
     useEffect(() => {
         const fetchMarketCap = async () => {
             try {
-                const response = await fetch(`/api/v1/marketcap`, { cache: "no-store" })
+                const response = await fetch(`/api/v1/marketcap`, { next: { revalidate: 60 } })
                 const jsonResponse = await response.json()
                 console.log(jsonResponse)
                 if (typeof jsonResponse === "number") {
@@ -86,7 +86,7 @@ export function TopGainersCard({ title, className }: CardProps) {
     useEffect(() => {
         const fetchGainers = async () => {
             try {
-                const response = await fetch(`/api/v1/coins`, { cache: "no-store" })
+                const response = await fetch(`/api/v1/coins`, {next: { revalidate: 60 }})
                 const data = await response.json()
                 if (data.length > 0) {
                     const sortedGainers = data.sort((a: any, b: any) => b.price_change_percentage_24h - a.price_change_percentage_24h)
@@ -147,7 +147,7 @@ export function TrendingCard({ title, className }: CardProps) {
     useEffect(() => {
         const fetchTrending = async () => {
             try {
-                const response = await fetch(`/api/v1/trending`, { cache: "no-store" })
+                const response = await fetch(`/api/v1/trending`, { next: { revalidate: 60 } })
                 const data = (await response.json()).slice(0, 3)
                 if (data.length > 0) {
                     setTrending(data)

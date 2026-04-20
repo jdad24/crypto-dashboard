@@ -18,6 +18,7 @@ export async function GET(req: Request) {
                 method: "eth_getBalance",
                 params: [address, "latest"],
             }),
+            next: { revalidate: 60 }
         }
     );
 

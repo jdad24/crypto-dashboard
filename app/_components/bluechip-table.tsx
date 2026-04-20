@@ -29,7 +29,7 @@ export function BluechipTable() {
     useEffect(() => {
         const fetchCoins = async () => {
             try {
-                const response = await fetch(`/api/v1/coins`, { cache: "no-store" })
+                const response = await fetch(`/api/v1/coins`, { next: { revalidate: 60 } })
                 const data: Array<Coin> = await response.json()
                 setCoins(data)
             } catch (e) {
