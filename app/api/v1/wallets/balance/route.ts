@@ -1,5 +1,3 @@
-import { request } from "https";
-
 export const runtime = "nodejs";
 
 export async function GET(req: Request) {

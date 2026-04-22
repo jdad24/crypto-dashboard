@@ -25,6 +25,10 @@ export default function AreaChart({ chartData, className }: {
     const formatData = (data: Array<Array<number>>) => {
         const formattedData: Array<AreaData> = []
 
+        if(!data) {
+            return []
+        }
+
         data.slice(0, 365).map(record => { //First 365 records
             const dataPoint: AreaData = {
                 time: new Date(record[0]).toISOString().split('T')[0],
